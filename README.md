@@ -1,6 +1,6 @@
 # MakeMyGreetings
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.1. You can send New Year Greeting to your loved ones [from here](https://makemygreeting.000webhostapp.com/create.html)
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.1. You can send New Year Greeting to your loved ones [Ctrl + Click here to send Greeting](https://makemygreeting.000webhostapp.com/create.html)
 
 ## Development server
 
@@ -27,4 +27,4 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md). 
 
 ## Contact Owner
-Click [here](mailto:rajeevranjan939@gmail.com?subject=Ref: MakeMyGreeting&)
+[Ctrl + Click here](mailto:rajeevranjan939@gmail.com?subject=Ref:MakeMyGreeting&)
