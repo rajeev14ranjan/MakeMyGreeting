@@ -115,7 +115,8 @@ export class AppComponent implements OnInit{
     this.post(postData).subscribe((data : any)=>{
       if(data && data.status){
         this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
-        let shareMsg = encodeURIComponent(`Hey, Click on this link to see your New Year Greeting: ${this.newLink}`);
+        let shareMsg = encodeURIComponent(`Hey ${this.newReceiver},
+         ${this.newSender} has sent you a lovely New Year Greeting, Read Here: ${this.newLink}`);
         this.whatsappMsg = 'whatsapp://send?text=' + shareMsg;
         this.fbMsg = 'fb-messenger://share/?link=' + shareMsg;
         this.linkGenerated = true;
