@@ -1,0 +1,49 @@
+.center{
+    width: 90vw;
+    height:90vh;
+    font-size:1.6em;
+    margin: auto;
+    padding:20px 15px;
+    font-weight: 300;
+    position: relative;
+    color:white;
+    text-align: left;
+    font-family: 'Dancing Script', cursive;
+}
+
+#create{
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+    color: #a3a1a1;
+    background-color: #424242;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    vertical-align: middle;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.mb0{
+    margin-bottom: 0;
+}
+
+.wd100{
+    width: 100%;
+}
+
+@media only screen and (min-width: 575px){
+    .socialLink{
+        display: none;
+    }
+}
+
+.loader {
+    position:absolute;
+    top:40%;
+    width: 90%;
+    margin:auto;
+    text-align: center;
+}
