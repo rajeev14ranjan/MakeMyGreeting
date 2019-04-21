@@ -1,6 +1,8 @@
 # MakeMyGreetings
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.1. You can send New Year Greeting to your loved ones [Ctrl + Click here to send Greeting](https://makemygreeting.000webhostapp.com/create.html)
+You can send New Year Greeting to your loved ones.
+[Ctrl + Click here to send Greeting](https://makemygreeting.000webhostapp.com/create.html).
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.1. 
 
 ## Development server
 
