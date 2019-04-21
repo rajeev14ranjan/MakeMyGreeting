@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser'
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,8 @@ export class AppComponent implements OnInit{
   public allowCreateLinks = true;
 
   public httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
+
+  @ViewChild('createModal') createModal : ModalDirective;
 
   constructor(private _http : HttpClient, private _sanitizer : DomSanitizer){
     this.randomSong();
