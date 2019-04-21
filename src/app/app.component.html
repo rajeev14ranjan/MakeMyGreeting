@@ -8,49 +8,74 @@
     {{isPreview ? newSender : senderName}}
     </p>
   
-    <!-- <button id="create" (click)="createModal.show(); isPreview = false;">{{isPreview ? 'This is a Preview, Continue editing' : 'Create'}}</button> -->
+    <button *ngIf="allowCreateLinks" 
+            id="create" 
+            (click)="createModal.show(); isPreview = false;">
+            {{isPreview ? 'This is a Preview, Continue editing' : 'Create'}}
+    </button>
  
-    <iframe *ngIf="isChrome" src="assets/songs/blank.mp3" allow="autoplay" id="audio" style="display: none"></iframe>
-    <audio id="player" autoplay style="display: none">
-      <source [src]="sanitize(songSrc)" type="audio/mp3">
+    <iframe *ngIf="isChrome" 
+            src="assets/songs/blank.mp3" 
+            allow="autoplay" 
+            id="audio" 
+            style="display: none">
+    </iframe>
+
+    <audio id="player" 
+           autoplay 
+           style="display: none">
+      <source [src]="sanitize(songSrc)" 
+              type="audio/mp3">
     </audio>
   </div>
 </div>
 
 
-<!-- <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1"
+<div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks"
      role="dialog" aria-labelledby="dialog-sizes-name1" (onHidden)="createModalClosed()">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{linkGenerated ? 'Link Generated Successfully' :'Create your Greeting'}}</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">
+          {{linkGenerated ? 'Link Generated Successfully' :'Create your Greeting'}}
+        </h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="!linkGenerated">
           <div class="form-group">
-          <label class="form-label text-info mb0" for="name">Enter Receiver's Name</label>
+          <label class="form-label text-info mb0" for="name">
+            Enter Receiver's Name
+          </label>
         <input class="form-control mb10" 
-        type="text" 
-        maxlength="25"
-        [(ngModel)]="newReceiver"/>
-        </div>
-
-          <div class="form-group">
-            <label class="form-label text-info mb0 wd100" for="name">Enter Greeting Message <span class="float-right text-muted">{{300 -newGreeting.length}}</span></label>
+               type="text" 
+               maxlength="25"
+               [(ngModel)]="newReceiver"/>
+      </div>
+        <div class="form-group">
+          <label class="form-label text-info mb0 wd100" 
+                 for="name">
+                    Enter Greeting Message 
+                    <span class="float-right text-muted">
+                      {{300 -newGreeting.length}}
+                    </span>
+          </label>
         <textarea class="form-control mb10"
-         rows="6"
-         style="resize: none"
-         type="text" 
-         maxlength="300"
-         [(ngModel)]="newGreeting"></textarea>
-          </div>
+                  rows="6"
+                  style="resize: none"
+                  type="text" 
+                  maxlength="300"
+                  [(ngModel)]="newGreeting">
+        </textarea>
+      </div>
 
           <div class="form-group">
-            <label class="form-label text-info mb0" for="name">Enter Sender's Name</label>
+            <label class="form-label text-info mb0" for="name">
+              Enter Sender's Name
+            </label>
           <input class="form-control " 
-          type="text" 
-          maxlength="25"
-          [(ngModel)]="newSender"/>
+                  type="text" 
+                maxlength="25"
+                [(ngModel)]="newSender"/>
           </div>
         </ng-container>
         <ng-container *ngIf="linkGenerated">
@@ -89,4 +114,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>

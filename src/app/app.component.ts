@@ -31,6 +31,8 @@ export class AppComponent implements OnInit{
   public isPreview = false;
   public songSrc = '';
   public showMessage = false;
+  //Mode to create new Greeting Links
+  public allowCreateLinks = true;
 
   public httpOptions = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
 
@@ -97,40 +99,42 @@ export class AppComponent implements OnInit{
     return (this.newGreeting == this.defaultGreeting ? this.greetingPlaceholder : this.newGreeting);
   }
 
-  // public saveGreetings(){
-  //   this.newReceiver = this.capitilize(this.newReceiver);
-  //   this.newSender = this.capitilize(this.newSender);
+  public saveGreetings(){
+    if(!this.allowCreateLinks) return;
 
-  //   let postData= {
-  //     'sn': this.newSender,
-  //     'rc': this.newReceiver,
-  //     'gt' : this.getGreetingPlaceholder(),
-  //     'action' : 'savegreeting'
-  //   };
+    this.newReceiver = this.capitilize(this.newReceiver);
+    this.newSender = this.capitilize(this.newSender);
 
-  //   this.post(postData).subscribe((data : any)=>{
-  //     if(data && data.status){
-  //       this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
-  //       let shareMsg = encodeURIComponent(`Hey, Click on this link to see your New Year Greeting: ${this.newLink}`);
-  //       this.whatsappMsg = 'whatsapp://send?text=' + shareMsg;
-  //       this.fbMsg = 'fb-messenger://share/?link=' + shareMsg;
-  //       this.linkGenerated = true;
-  //       this.isPreview = false;
-  //     }
-  //   })
-  // }
+    let postData= {
+      'sn': this.newSender,
+      'rc': this.newReceiver,
+      'gt' : this.getGreetingPlaceholder(),
+      'action' : 'savegreeting'
+    };
 
-  // public createModalClosed(){
-  //   if(this.linkGenerated){
-  //     this.linkGenerated = false;
-  //     this.isPreview = false;
-  //     this.newReceiver = '';
-  //     this.newLink = '';
-  //     this.whatsappMsg = '';
-  //     this.fbMsg = '';
-  //     this.removeLogo();
-  //   }
-  // }
+    this.post(postData).subscribe((data : any)=>{
+      if(data && data.status){
+        this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
+        let shareMsg = encodeURIComponent(`Hey, Click on this link to see your New Year Greeting: ${this.newLink}`);
+        this.whatsappMsg = 'whatsapp://send?text=' + shareMsg;
+        this.fbMsg = 'fb-messenger://share/?link=' + shareMsg;
+        this.linkGenerated = true;
+        this.isPreview = false;
+      }
+    })
+  }
+
+  public createModalClosed(){
+    if(this.linkGenerated){
+      this.linkGenerated = false;
+      this.isPreview = false;
+      this.newReceiver = '';
+      this.newLink = '';
+      this.whatsappMsg = '';
+      this.fbMsg = '';
+      this.removeLogo();
+    }
+  }
 
   sanitize(url:string){
     return this._sanitizer.bypassSecurityTrustUrl(url);
@@ -174,7 +178,7 @@ export class AppComponent implements OnInit{
 
   
 
-  //---HTTP Methds with Cache-----
+  //---HTTP Methds with Session Storage Cache-----
   public post(postData:any):Observable<any>{
     if(sessionStorage && sessionStorage.getItem(postData.id)){
       return of(JSON.parse(sessionStorage.getItem(postData.id)));
