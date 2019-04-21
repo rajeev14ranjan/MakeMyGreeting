@@ -1,10 +1,10 @@
-# Greetings
+# MakeMyGreetings
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.1.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.1. You can send New Year Greeting to your loved ones [from here](https://makemygreeting.000webhostapp.com/create.html)
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. In addition to this you will also need supporting db and api which is Not there in repo.
 
 ## Code scaffolding
 
@@ -24,4 +24,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md). 
+
+## Contact Owner
+Click [here](mailto:rajeevranjan939@gmail.com?subject=Ref: MakeMyGreeting&)
