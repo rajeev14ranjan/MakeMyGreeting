@@ -37,14 +37,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 id="dialog-sizes-name1" class="modal-title pull-left">
-          {{linkGenerated ? 'Link Generated Successfully' :'Create your Greeting'}}
+          {{linkGenerated ? 'Link Generated Successfully' :'Compose your Greeting'}}
         </h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="!linkGenerated">
           <div class="form-group">
           <label class="form-label text-info mb0" for="name">
-            Enter Receiver's Name
+            Receiver's Name
           </label>
         <input class="form-control mb10" 
                type="text" 
@@ -54,9 +54,9 @@
         <div class="form-group">
           <label class="form-label text-info mb0 wd100" 
                  for="name">
-                    Enter Greeting Message 
+                    Greeting Message 
                     <span class="float-right text-muted">
-                      {{300 -newGreeting.length}}
+                      {{300 - newGreeting.length}}
                     </span>
           </label>
         <textarea class="form-control mb10"
@@ -70,7 +70,7 @@
 
           <div class="form-group">
             <label class="form-label text-info mb0" for="name">
-              Enter Sender's Name
+              Sender's Name
             </label>
           <input class="form-control " 
                   type="text" 

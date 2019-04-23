@@ -152,7 +152,7 @@ export class AppComponent implements OnInit{
 
   //Called to get greeting from the server if there is a valid Id
   public getGreeting(id : string){
-    if(!id || id.length != 12) {
+    if(!id) {
       this.initializeDefault();
       return;
     }
