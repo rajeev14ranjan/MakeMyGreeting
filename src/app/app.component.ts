@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
   randomSong() {
     let i = parseInt(sessionStorage.getItem('key_songId'));
     i = Number.isInteger(i) ? (i + 1) % 5 : (Math.random() * 5) >> 0;
-    this.songSrc = `assets/songs/song${i}.mp3`;
+    this.songSrc = `assets/songs/${this.greetingType}/song${i}.mp3`;
     sessionStorage.setItem('key_songId', i.toString());
   }
 
