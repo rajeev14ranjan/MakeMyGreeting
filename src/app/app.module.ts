@@ -5,10 +5,12 @@ import { HttpClientModule, HttpClient} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BalloonsComponent } from './balloons/balloons.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BalloonsComponent
   ],
   imports: [
     BrowserModule,

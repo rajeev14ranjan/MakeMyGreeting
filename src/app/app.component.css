@@ -30,6 +30,14 @@
     margin-bottom: 0;
 }
 
+.pr5{
+    padding-right: 5px;
+}
+
+.pl5{
+    padding-left: 5px;
+}
+
 .wd100{
     width: 100%;
 }
@@ -46,4 +54,32 @@
     width: 90%;
     margin:auto;
     text-align: center;
+}
+
+.inbl{
+    display: inline-block;
+}
+.textJustify{
+    text-align: justify;
+}
+
+.bb{
+    box-sizing: border-box;
+}
+
+.half{
+    width:50%;
+}
+
+.fr85{
+    width:85%;
+}
+
+.fr15{
+    width:15%;
+}
+
+.deflt{
+    border: 1px solid grey;
+    width: 100%;
 }

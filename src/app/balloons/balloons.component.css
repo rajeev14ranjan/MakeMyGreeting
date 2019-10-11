@@ -1,0 +1,131 @@
+span {
+    text-transform: uppercase;  
+  }
+  .container {
+    padding: 20px 0;
+    position: relative;
+  }
+  .balloon { 
+    position: relative;
+  }
+  .balloon > div {
+    width: 52px;
+    height: 70px;    
+    border-radius:0;
+    border-radius:80% 80% 80% 80%;
+    margin: 0 auto;
+    display: inline-block;
+    padding:10px;
+    box-sizing: content-box;
+  }
+  .balloon > div:nth-child(1){
+    background: #d10066e6;
+    left: 0; 
+    box-shadow: inset 10px 10px 10px #e470a9e6;
+    animation:balloon1 6s ease-in-out infinite;
+    }
+  
+  .balloon > div:nth-child(1):before { 
+     color: #d10066e6 ;
+    }
+  
+  .balloon > div:nth-child(2){
+    background: #e24d00e6;
+    left: 70px; 
+    box-shadow:inset 10px 10px 10px #ffa06ee6;
+    animation:balloon2 6s ease-in-out infinite;
+    }
+  
+  .balloon > div:nth-child(2):before { 
+     color: #e24d00e6 ;
+    }
+  
+  .balloon > div:nth-child(3){
+    background: #26a79ae6;
+    left: 140px; 
+    box-shadow:inset 10px 10px 10px #56d5c8e6;
+    animation:balloon4 4s ease-in-out infinite;
+    }
+  
+  .balloon > div:nth-child(3):before { 
+     color: #26a79ae6 ;
+    }
+  
+  .balloon > div:nth-child(4){
+    background: #8900c3e6;
+    left: 210px; 
+    box-shadow:inset 10px 10px 10px #ad0ef0e6; 
+    animation:balloon1 5s ease-in-out infinite;
+  }
+  
+  .balloon > div:nth-child(4):before { 
+    color: #8900c3e6 ;
+  }
+  
+  .balloon > div:nth-child(5){
+    background: #87bb01e6;
+    left: 280px; 
+    box-shadow:inset 10px 10px 10px #b3e434e6;
+    animation:balloon3 5s ease-in-out infinite;
+  }
+  
+  .balloon > div:nth-child(5):before { 
+    color: #87bb01e6 ;
+  }
+  
+  
+  .balloon > div:nth-child(6){
+    background: #c99606e6;
+    left: 350px; 
+    box-shadow:inset 10px 10px 10px #eab10fe6;
+     animation:balloon2 3s ease-in-out infinite;
+    }
+  
+  .balloon > div:nth-child(6):before { 
+     color: #c99606e6; 
+    }
+  
+  .balloon > div:before {
+    position:absolute;
+    bottom: -19px;
+    left: 27px;
+    content: "▲";
+    font-size: .8em;
+  }
+  
+  span {
+      font-size: 2em;
+      opacity: 0.8;
+      width: 50px;
+      display: inline-block;
+      text-align: center;
+      color: #000000e8;
+      position: relative;
+      top: 0px;
+  } 
+  
+  /*BALLOON 1 4*/
+  @keyframes balloon1 {
+      0%,100%{ transform:translateY(0) rotate(-6deg);}
+      50%{ transform:translateY(-10px) rotate(8deg); }
+  }
+  
+  /* BAllOON 2 5*/
+  @keyframes balloon2 {
+      0%,100%{ transform:translate(-5px,-15px) rotate(6deg);}
+      50%{ transform:translate(5px, 0) rotate(-8deg); }
+  }
+  
+  
+  /* BAllOON 0*/
+  @keyframes balloon3 {
+   0%,100%{ transform:translate(0, -5px) rotate(6eg);}
+    50%{ transform:translate(-10px, 15px) rotate(-8deg); }
+  }
+  
+  /* BAllOON 3*/
+  @keyframes balloon4 {
+    0%,100%{ transform:translate(5px, -5px) rotate(-8eg);}
+    50%{ transform:translate(-8px, 5px) rotate(10deg); }
+  }
+  

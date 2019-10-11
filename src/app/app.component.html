@@ -2,15 +2,17 @@
   <div *ngIf="!showMessage" class="loader">Loading your Greeting ...</div>
   <div [hidden]="!showMessage">
     <p style="font-size: 1.2em; padding-top:0.4em;">Hey {{isPreview ? newReceiver :receiverName}} !</p>
-    <p style="text-align: justify">{{isPreview ? newGreeting : greeting}}</p>
-    <img style="width:80%;max-width: 500px;" src="assets/year.png"/>
+    <p class="textJustify">{{isPreview ? newGreeting : greeting}}</p>
+    <img *ngIf="displayType==='HNY'" style="width:80%;max-width: 500px;" src="assets/year.png"/>
+    <balloons *ngIf="displayType==='HBD'"></balloons>
+
     <p style="font-size: 1.2em">From<br/>
     {{isPreview ? newSender : senderName}}
     </p>
   
     <button *ngIf="allowCreateLinks" 
             id="create" 
-            (click)="createModal.show(); isPreview = false;">
+            (click)="openCreateGreetingModal()">
             {{isPreview ? 'This is a Preview, Continue editing' : 'Create'}}
     </button>
  
@@ -32,34 +34,62 @@
 
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks"
-     role="dialog" aria-labelledby="dialog-sizes-name1" (onHidden)="createModalClosed()">
+     role="dialog" (onHidden)="createModalClosed()">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">
-          {{linkGenerated ? 'Link Generated Successfully' :'Compose your Greeting'}}
+        <h4 class="modal-title pull-left" style="line-height: 1;">
+          {{linkGenerated ? 'Greeting Generated' :'Compose Greeting'}}
         </h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="!linkGenerated">
-          <div class="form-group">
-          <label class="form-label text-info mb0" for="name">
-            Receiver's Name
-          </label>
-        <input class="form-control mb10" 
-               type="text" 
-               maxlength="25"
-               [(ngModel)]="newReceiver"/>
-      </div>
-        <div class="form-group">
+            <div class="form-group">
+              <div class="fr85 pr5 inbl bb">
+                <label class="form-label text-info mb0" for="name">
+                  Greeting Type
+                </label>
+              <select class="form-control mb10" 
+                [(ngModel)]="newGreetingType">
+                  <option value="HNY">Happy New Year</option>
+                  <option value="HBD">Happy Birthday</option>
+              </select>
+              </div>
+              <div class="fr15 pl5 inbl bb">
+                <button class="btn deflt" (click)="loadDefaultWish()">Load</button>
+              </div>
+            </div>
+            <div class="form-group">
+                <div class="half pr5 inbl bb">
+                    <label class="form-label text-info mb0" for="name">
+                        Receiver's Name
+                      </label>
+                    <input class="form-control mb10" 
+                           type="text"
+                           maxlength="25"
+                           spellcheck="false"
+                           [(ngModel)]="newReceiver"/>
+                    </div>
+                <div class="half pl5 inbl bb">
+                    <label class="form-label text-info mb0" for="name">
+                        Sender's Name
+                      </label>
+                    <input class="form-control" 
+                           type="text" 
+                           spellcheck="false"
+                           maxlength="25"
+                           [(ngModel)]="newSender"/></div>            
+              </div>
+            
+        <div class="form-group mb0">
           <label class="form-label text-info mb0 wd100" 
                  for="name">
                     Greeting Message 
                     <span class="float-right text-muted">
-                      {{300 - newGreeting.length}}
+                      {{300 - newGreeting.length}} char left
                     </span>
           </label>
-        <textarea class="form-control mb10"
+        <textarea class="form-control mb10 textJustify"
                   rows="6"
                   style="resize: none"
                   type="text" 
@@ -67,19 +97,10 @@
                   [(ngModel)]="newGreeting">
         </textarea>
       </div>
-
-          <div class="form-group">
-            <label class="form-label text-info mb0" for="name">
-              Sender's Name
-            </label>
-          <input class="form-control " 
-                  type="text" 
-                maxlength="25"
-                [(ngModel)]="newSender"/>
-          </div>
+          
         </ng-container>
         <ng-container *ngIf="linkGenerated">
-          <h5 class="text-info">You can now share this link with {{newReceiver}}</h5><br/>
+          <h5 class="text-info">Share this link with {{newReceiver}}</h5><br/>
           <code><a target="_blank" [href]="newLink">{{newLink}}</a></code><br/><br/>
         </ng-container>
         
@@ -87,12 +108,11 @@
       <div class="modal-footer">
         <button *ngIf="!linkGenerated && newSender && newReceiver && newGreeting"
         class="btn btn-xs btn-success mr-auto" 
-        (click)="showPreview();createModal.hide()">Preview</button>
+        (click)="showPreview()">Preview</button>
 
         <button [disabled]="!(newSender && newReceiver && newGreeting)" 
         *ngIf="!linkGenerated"
-        [ngClass]="(newSender && newReceiver && newGreeting)?'btn-info':'btn-secondary'"
-        class="btn btn-xs" 
+        class="btn btn-xs btn-info" 
         (click)="saveGreetings()">Create Link</button>
 
         <a [hidden]="!linkGenerated" class="socialLink"
