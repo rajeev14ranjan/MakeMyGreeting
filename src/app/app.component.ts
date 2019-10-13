@@ -29,6 +29,11 @@ export class AppComponent implements OnInit {
       'Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises! Happy birthday!',
   };
   private defaultType = 'HNY';
+  private songCount = {
+    HNY: 5,
+    HBD: 4,
+  };
+  private untrackableKey = 'key_untracakable';
 
   // Values for creating/previewing new greetings
   public newSender = '';
@@ -41,10 +46,12 @@ export class AppComponent implements OnInit {
   public newLink = '';
   public whatsappMsg = '';
   public fbMsg = '';
-  public isChrome = true;
   public isPreview = false;
   public songSrc = '';
+  public isMute = true;
   public showMessage = false;
+  public untrackable = false;
+  public songPlayer: HTMLAudioElement;
 
   // Mode to create new Greeting Links
   public allowCreateLinks = true;
@@ -56,31 +63,47 @@ export class AppComponent implements OnInit {
 
   @ViewChild('createModal') createModal: ModalDirective;
 
-  constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {
-    this.randomSong();
-  }
+  constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {  }
 
   ngOnInit() {
-    this.isChrome =
-      /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     this.getGreeting(this.getQueryParam('id'));
     this.newGreeting = this.defaultGreeting[this.defaultType];
+    this.untrackable = localStorage.getItem(this.untrackableKey) === 'true';
+    this.songPlayer = this.getSongPlayerElt();
     this.removeLogo();
   }
-  
+
+  public getSongPlayerElt(): HTMLAudioElement {
+    return <HTMLAudioElement>document.getElementById('songPlayer');
+  }
+
   public initializeDefault() {
     this.receiverName = this.defaultReceiverName;
     this.senderName = this.defaultSenderName;
     this.greeting = this.defaultGreeting[this.defaultType];
-    this.displayType = this.defaultType;
+    this.greetingType = this.displayType = this.defaultType;
     this.showMessage = true;
   }
 
-  randomSong() {
-    let i = parseInt(sessionStorage.getItem('key_songId'));
-    i = Number.isInteger(i) ? (i + 1) % 5 : (Math.random() * 5) >> 0;
-    this.songSrc = `assets/songs/${this.greetingType}/song${i}.mp3`;
-    sessionStorage.setItem('key_songId', i.toString());
+  public onSongEnded() {
+    this.isMute = true;
+    this.generateNextSongSrc();
+  }
+
+  public generateNextSongSrc() {
+    const lastSong =
+      parseInt(sessionStorage.getItem('key_songId'), 10) ||
+      Math.floor(Math.random() * this.songCount[this.greetingType]);
+    const nextSong = (lastSong + 1) % this.songCount[this.greetingType];
+    this.songSrc = `assets/songs/${this.greetingType}/song${nextSong}.mp3`;
+    sessionStorage.setItem('key_songId', nextSong.toString());
+    if (!this.songPlayer) {
+      this.songPlayer = this.getSongPlayerElt();
+    }
+    if (this.songPlayer) {
+      this.songPlayer.src = this.songSrc;
+      this.songPlayer.load();
+    }
   }
 
   removeLogo() {
@@ -95,26 +118,6 @@ export class AppComponent implements OnInit {
     }, 100);
   }
 
-  public capitilize(name: string): string {
-    try {
-      let nameArry = name.split(' ');
-      nameArry = nameArry.map(x => x[0].toUpperCase() + x.substr(1));
-      return nameArry.join(' ');
-    } catch (e) {
-      return name;
-    }
-  }
-
-  public copyLink() {
-    const input = document.createElement('input');
-    input.setAttribute('value', this.newLink);
-    document.body.appendChild(input);
-    input.select();
-    const result = document.execCommand('copy');
-    document.body.removeChild(input);
-    return result;
-  }
-
   public getGreetingPlaceholder() {
     return this.isGreetingDefault()
       ? this.greetingPlaceholder
@@ -126,50 +129,24 @@ export class AppComponent implements OnInit {
   }
 
   public loadDefaultWish() {
-   this.newGreeting = this.defaultGreeting[this.newGreetingType];
-  }
-
-  public createModalClosed() {
-    if (this.linkGenerated) {
-      this.linkGenerated = false;
-      this.isPreview = false;
-      this.newReceiver = '';
-      this.newLink = '';
-      this.whatsappMsg = '';
-      this.fbMsg = '';
-      this.removeLogo();
-    }
+    this.newGreeting = this.defaultGreeting[this.newGreetingType];
   }
 
   sanitize(url: string) {
     return this._sanitizer.bypassSecurityTrustUrl(url);
   }
 
-  public showPreview() {
-    this.isPreview = true;
-    this.newReceiver = this.capitilize(this.newReceiver);
-    this.newSender = this.capitilize(this.newSender);
-    this.displayType = this.newGreetingType;
-    this.createModal.hide();
-  }
-
-  public openCreateGreetingModal() {
-    if (this.isPreview) {
-      this.displayType = this.greetingType;
-    }
-    this.createModal.show();
-    this.isPreview = false;
-  }
-
   // Called to get greeting from the server if there is a valid Id
   public getGreeting(id: string) {
     if (!id) {
       this.initializeDefault();
+      this.generateNextSongSrc();
       return;
     }
 
     const postData = {
       id: id,
+      ut: this.untrackable,
       action: 'getgreeting',
     };
 
@@ -197,37 +174,21 @@ export class AppComponent implements OnInit {
       } else {
         this.initializeDefault();
       }
+    },
+    () => {
+      // Getting next source song as per greeting type
+      this.generateNextSongSrc();
     });
   }
 
-  // Save the greeting to the server and dispay the greeting Id link to user
-  public saveGreetings() {
-    if (!this.allowCreateLinks) {
-      return;
-    }
+  public togglePlayer() {
+    this.isMute = !this.isMute;
+    this.isMute ? this.songPlayer.pause() : this.songPlayer.play();
+  }
 
-    this.newReceiver = this.capitilize(this.newReceiver);
-    this.newSender = this.capitilize(this.newSender);
-
-    const postData = {
-      sn: this.newSender,
-      rc: this.newReceiver,
-      gt: this.getGreetingPlaceholder(),
-      ty: this.newGreetingType,
-      action: 'savegreeting',
-    };
-
-    this.post(postData).subscribe((data: any) => {
-      if (data && data.status) {
-        this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
-        const shareMsg = encodeURIComponent(`Hi,
-         I've created a ${this.newGreetingType} greeting for you, Check it out: ${this.newLink}`);
-        this.whatsappMsg = 'whatsapp://send?text=' + shareMsg;
-        this.fbMsg = 'fb-messenger://share/?link=' + shareMsg;
-        this.linkGenerated = true;
-        this.isPreview = false;
-      }
-    });
+  public toggleTrackable() {
+    this.untrackable = !this.untrackable;
+    localStorage.setItem(this.untrackableKey, this.untrackable.toString());
   }
 
   // ---HTTP Methds with Session Storage Cache-----
@@ -253,4 +214,83 @@ export class AppComponent implements OnInit {
     }
     return paramValue;
   }
-}
+
+  // **********************Only the create part*************************
+
+  public saveGreetings() {
+    if (!this.allowCreateLinks) {
+      return;
+    }
+
+    this.newReceiver = this.capitilize(this.newReceiver);
+    this.newSender = this.capitilize(this.newSender);
+
+    const postData = {
+      sn: this.newSender,
+      rc: this.newReceiver,
+      gt: this.getGreetingPlaceholder(),
+      ty: this.newGreetingType,
+      action: 'savegreeting',
+    };
+
+    this.post(postData).subscribe((data: any) => {
+      if (data && data.status) {
+        this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
+        const shareMsg = encodeURIComponent(`Hi,
+       I've created a ${this.newGreetingType} greeting for you, Check it out: ${this.newLink}`);
+        this.whatsappMsg = 'whatsapp://send?text=' + shareMsg;
+        this.fbMsg = 'fb-messenger://share/?link=' + shareMsg;
+        this.linkGenerated = true;
+        this.isPreview = false;
+      }
+    });
+  }
+
+  public showPreview() {
+    this.isPreview = true;
+    this.newReceiver = this.capitilize(this.newReceiver);
+    this.newSender = this.capitilize(this.newSender);
+    this.displayType = this.newGreetingType;
+    this.createModal.hide();
+  }
+
+  public openCreateGreetingModal() {
+    if (this.isPreview) {
+      this.displayType = this.greetingType;
+    }
+    this.createModal.show();
+    this.isPreview = false;
+  }
+
+  public capitilize(name: string): string {
+    try {
+      let nameArry = name.split(' ');
+      nameArry = nameArry.map(x => x[0].toUpperCase() + x.substr(1));
+      return nameArry.join(' ');
+    } catch (e) {
+      return name;
+    }
+  }
+
+  public copyLink() {
+    const input = document.createElement('input');
+    input.setAttribute('value', this.newLink);
+    document.body.appendChild(input);
+    input.select();
+    const result = document.execCommand('copy');
+    document.body.removeChild(input);
+    return result;
+  }
+
+  public createModalClosed() {
+    if (this.linkGenerated) {
+      this.linkGenerated = false;
+      this.isPreview = false;
+      this.newReceiver = '';
+      this.newLink = '';
+      this.whatsappMsg = '';
+      this.fbMsg = '';
+      this.removeLogo();
+    }
+  }
+} // End closing tag of component

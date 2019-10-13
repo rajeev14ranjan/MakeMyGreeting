@@ -26,6 +26,17 @@
     cursor: pointer;
 }
 
+.muteBtn{
+    position: absolute;
+    top: 5%;
+    right: 1%;
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    text-align: center;
+    outline: none;
+}
+
 .mb0{
     margin-bottom: 0;
 }
@@ -71,15 +82,8 @@
     width:50%;
 }
 
-.fr85{
-    width:80%;
-}
-
-.fr15{
-    width:20%;
-}
-
 .deflt{
     border: 1px solid grey;
+    vertical-align: inherit;
     width: 100%;
 }

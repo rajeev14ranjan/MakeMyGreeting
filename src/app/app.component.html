@@ -3,7 +3,7 @@
   <div [hidden]="!showMessage">
     <p style="font-size: 1.2em; padding-top:0.4em;">Hey {{isPreview ? newReceiver :receiverName}} !</p>
     <p class="textJustify">{{isPreview ? newGreeting : greeting}}</p>
-    <img *ngIf="displayType==='HNY'" style="width:80%;max-width: 500px;" src="assets/year.png"/>
+    <img *ngIf="displayType==='HNY'" style="width:80%;max-width: 500px;" src="assets/img/year.png"/>
     <balloons *ngIf="displayType==='HBD'"></balloons>
 
     <p style="font-size: 1.2em">From<br/>
@@ -15,23 +15,18 @@
             (click)="openCreateGreetingModal()">
             {{isPreview ? 'This is a Preview, Continue editing' : 'Create'}}
     </button>
- 
-    <iframe *ngIf="isChrome" 
-            src="assets/songs/blank.mp3" 
-            allow="autoplay" 
-            id="audio" 
-            style="display: none">
-    </iframe>
 
-    <audio id="player" 
-           autoplay 
+    <button class="muteBtn" (click)="togglePlayer()">{{isMute ? '🔇' : '🔊'}}</button>
+
+    <audio id="songPlayer"  
+           (ended)="onSongEnded()"
            style="display: none">
-      <source [src]="sanitize(songSrc)" 
-              type="audio/mp3">
+      <source src="" type="audio/mpeg">
     </audio>
   </div>
 </div>
 
+<!------------------- Only the create part ------------------->
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks"
      role="dialog" (onHidden)="createModalClosed()">
@@ -45,7 +40,7 @@
       <div class="modal-body">
         <ng-container *ngIf="!linkGenerated">
             <div class="form-group">
-              <div class="fr85 pr5 inbl bb">
+              <div class="half pr5 inbl bb">
                 <label class="form-label text-info mb0" for="name">
                   Greeting Type
                 </label>
@@ -55,8 +50,17 @@
                   <option value="HBD">Happy Birthday</option>
               </select>
               </div>
-              <div class="fr15 pl5 inbl bb">
-                <button class="btn deflt" (click)="loadDefaultWish()">Load</button>
+              <div class="half pl5 inbl bb">
+                <div class="half pr5 inbl">
+                  <button class="btn deflt" (click)="loadDefaultWish()">Load</button>
+                </div>
+                <div class="half pl5 inbl">
+                  <button class="btn deflt" 
+                  [ngClass]="untrackable ? '' : 'btn-danger'" 
+                  (click)="toggleTrackable()">
+                  {{untrackable ? 'UnTrack' : 'Track'}}
+                </button>
+                </div>
               </div>
             </div>
             <div class="form-group">
@@ -118,13 +122,13 @@
         <a [hidden]="!linkGenerated" class="socialLink"
             style="margin-right: 5px"
             [href]="sanitize(fbMsg)">
-            <img style="width:40px;height: 39px; border-radius: .25rem; border: 1px solid;" src="assets/fb.png">
+            <img style="width:40px;height: 39px; border-radius: .25rem; border: 1px solid;" src="assets/img/fb.png">
         </a>
 
         <a [hidden]="!linkGenerated" class="socialLink"
             style="margin-right: 5px"
             [href]="sanitize(whatsappMsg)">
-            <img style="width:40px;height: 38px; border-radius: .25rem" src="assets/whatsapp.png">
+            <img style="width:40px;height: 38px; border-radius: .25rem" src="assets/img/whatsapp.png">
         </a>
 
         <button *ngIf="linkGenerated"
