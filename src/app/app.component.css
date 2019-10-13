@@ -12,6 +12,7 @@
 }
 
 #create{
+    font-size:1.4em;
     position: fixed;
     bottom: 5%;
     right: 5%;
@@ -29,7 +30,7 @@
 .muteBtn{
     position: absolute;
     top: 5%;
-    right: 1%;
+    right: 10px;
     border: none;
     background-color: transparent;
     text-decoration: none;
