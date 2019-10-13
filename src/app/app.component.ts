@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     HNY:
       'May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year',
     HBD:
-      'Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises! Happy birthday!',
+      'Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !',
   };
   private defaultType = 'HNY';
   private songCount = {
@@ -63,12 +63,13 @@ export class AppComponent implements OnInit {
 
   @ViewChild('createModal') createModal: ModalDirective;
 
-  constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {}
+  constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {
+    this.untrackable = localStorage.getItem(this.untrackableKey) === 'true';
+  }
 
   ngOnInit() {
     this.getGreeting(this.getQueryParam('id'));
     this.newGreeting = this.defaultGreeting[this.defaultType];
-    this.untrackable = localStorage.getItem(this.untrackableKey) === 'true';
     this.songPlayer = this.getSongPlayerElt();
     this.removeLogo();
   }
