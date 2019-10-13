@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild('createModal') createModal: ModalDirective;
 
-  constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {  }
+  constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     this.getGreeting(this.getQueryParam('id'));
@@ -83,6 +83,7 @@ export class AppComponent implements OnInit {
     this.greeting = this.defaultGreeting[this.defaultType];
     this.greetingType = this.displayType = this.defaultType;
     this.showMessage = true;
+    this.generateNextSongSrc();
   }
 
   public onSongEnded() {
@@ -140,7 +141,6 @@ export class AppComponent implements OnInit {
   public getGreeting(id: string) {
     if (!id) {
       this.initializeDefault();
-      this.generateNextSongSrc();
       return;
     }
 
@@ -167,6 +167,9 @@ export class AppComponent implements OnInit {
         this.showMessage = true;
         this.displayType = this.greetingType;
 
+        // Getting next source song as per greeting type
+        this.generateNextSongSrc();
+
         // Saving the response data for caching
         if (sessionStorage && !sessionStorage.getItem(postData.id)) {
           sessionStorage.setItem(postData.id, JSON.stringify(data));
@@ -174,10 +177,6 @@ export class AppComponent implements OnInit {
       } else {
         this.initializeDefault();
       }
-    },
-    () => {
-      // Getting next source song as per greeting type
-      this.generateNextSongSrc();
     });
   }
 
