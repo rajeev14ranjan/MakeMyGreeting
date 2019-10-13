@@ -86,6 +86,10 @@ export class AppComponent implements OnInit {
     this.generateNextSongSrc();
   }
 
+  public visibleFor(type: string): Boolean {
+    return this.displayType === type;
+  }
+
   public onSongEnded() {
     this.isMute = true;
     this.generateNextSongSrc();

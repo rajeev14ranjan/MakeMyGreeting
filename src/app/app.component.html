@@ -3,18 +3,12 @@
   <div [hidden]="!showMessage">
     <p style="font-size: 1.2em; padding-top:0.4em;">Hey {{isPreview ? newReceiver :receiverName}} !</p>
     <p class="textJustify">{{isPreview ? newGreeting : greeting}}</p>
-    <img *ngIf="displayType==='HNY'" style="width:80%;max-width: 500px;" src="assets/img/year.png"/>
-    <balloons *ngIf="displayType==='HBD'"></balloons>
+    <img *ngIf="visibleFor('HNY')" style="width:80%;max-width: 500px;" src="assets/img/year.png"/>
+    <balloons *ngIf="visibleFor('HBD')"></balloons>
 
     <p style="font-size: 1.2em">From<br/>
     {{isPreview ? newSender : senderName}}
     </p>
-  
-    <button *ngIf="allowCreateLinks" 
-            id="create" 
-            (click)="openCreateGreetingModal()">
-            {{isPreview ? 'This is a Preview, Continue editing' : 'Create'}}
-    </button>
 
     <button class="muteBtn" (click)="togglePlayer()">{{isMute ? '🔇' : '🔊'}}</button>
 
@@ -27,6 +21,13 @@
 </div>
 
 <!------------------- Only the create part ------------------->
+
+<button *ngIf="allowCreateLinks" 
+  id="create" 
+  (click)="openCreateGreetingModal()">
+  {{isPreview ? 'This is a Preview, Continue editing' : 'Create'}}
+</button>
+
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks"
      role="dialog" (onHidden)="createModalClosed()">
@@ -134,7 +135,7 @@
         <button *ngIf="linkGenerated"
         class="btn btn-xs btn-info" 
         (click)="copyLink()">Copy Link</button>
-        <button class="btn btn-xs btn-danger" (click)="createModal.hide()">Close</button>
+        <button class="btn btn-xs btn-secondary" (click)="createModal.hide()">Close</button>
       </div>
     </div>
   </div>
