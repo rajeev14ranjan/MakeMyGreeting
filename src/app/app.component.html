@@ -5,8 +5,7 @@
       Hey {{ isPreview ? newReceiver : receiverName }} !
     </p>
     <p class="textJustify">{{ isPreview ? newGreeting : greeting }}</p>
-    <img *ngIf="visibleFor('HNY')" style="width:80%;max-width: 500px;"
-      src="assets/img/year.png" />
+    <img *ngIf="visibleFor('HNY')" style="width:80%;max-width: 500px;" src="assets/img/year.png" />
     <balloons *ngIf="visibleFor('HBD')"></balloons>
 
     <p style="font-size: 1.2em">
@@ -26,13 +25,11 @@
 
 <!------------------- Only the create part ------------------->
 
-<button *ngIf="allowCreateLinks" id="create"
-  (click)="openCreateGreetingModal()">
+<button *ngIf="allowCreateLinks" id="create" (click)="openCreateGreetingModal()">
   {{ isPreview ? 'This is a Preview, Continue editing' : 'Create' }}
 </button>
 
-<div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1"
-  *ngIf="allowCreateLinks" role="dialog"
+<div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks" role="dialog"
   (onHidden)="createModalClosed()">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -48,7 +45,7 @@
               <label class="form-label text-info mb0" for="name">
                 Greeting Type
               </label>
-              <select class="form-control mb10" [(ngModel)]="newGreetingType">
+              <select class="form-control mb10" (change)="loadDefaultWish()" [(ngModel)]="newGreetingType">
                 <option value="HNY">Happy New Year</option>
                 <option value="HBD">Happy Birthday</option>
               </select>
@@ -56,7 +53,7 @@
             <div class="half pl5 inbl bb">
               <div class="half pr5 inbl">
                 <button class="btn deflt" (click)="loadDefaultWish()">
-                  Load
+                  Reset
                 </button>
               </div>
               <div class="half pl5 inbl">
@@ -72,16 +69,14 @@
               <label class="form-label text-info mb0" for="name">
                 Receiver's Name
               </label>
-              <input class="form-control mb10" type="text" maxlength="25"
-                spellcheck="false"
+              <input class="form-control mb10" type="text" maxlength="25" spellcheck="false"
                 [(ngModel)]="newReceiver" />
             </div>
             <div class="half pl5 inbl bb">
               <label class="form-label text-info mb0" for="name">
                 Sender's Name
               </label>
-              <input class="form-control" type="text" spellcheck="false"
-                maxlength="25" [(ngModel)]="newSender" />
+              <input class="form-control" type="text" spellcheck="false" maxlength="25" [(ngModel)]="newSender" />
             </div>
           </div>
 
@@ -92,8 +87,7 @@
                 {{ 300 - newGreeting.length }} char left
               </span>
             </label>
-            <textarea class="form-control mb10" rows="7" style="resize: none"
-              type="text" maxlength="300"
+            <textarea class="form-control mb10" rows="7" style="resize: none" type="text" maxlength="300"
               [(ngModel)]="newGreeting">
             </textarea>
           </div>
@@ -108,13 +102,11 @@
       </div>
       <div class="modal-footer">
         <button *ngIf="!linkGenerated && newSender && newReceiver &&
-          newGreeting" class="btn btn-xs btn-success mr-auto"
-          (click)="showPreview()">
+          newGreeting" class="btn btn-xs btn-success mr-auto" (click)="showPreview()">
           Preview
         </button>
 
-        <button [disabled]="!(newSender && newReceiver && newGreeting)"
-          *ngIf="!linkGenerated"
+        <button [disabled]="!(newSender && newReceiver && newGreeting)" *ngIf="!linkGenerated"
           class="btn btn-xs btn-info" (click)="saveGreetings()">
           Create Link
         </button>
@@ -127,12 +119,10 @@
 
         <a [hidden]="!linkGenerated" class="socialLink" style="margin-right:
           5px" [href]="sanitize(whatsappMsg)">
-          <img style="width:40px;height: 38px; border-radius: .25rem"
-            src="assets/img/whatsapp.png" />
+          <img style="width:40px;height: 38px; border-radius: .25rem" src="assets/img/whatsapp.png" />
         </a>
 
-        <button *ngIf="linkGenerated" class="btn btn-xs btn-info"
-          (click)="copyLink()">
+        <button *ngIf="linkGenerated" class="btn btn-xs btn-info" (click)="copyLink()">
           Copy Link
         </button>
         <button class="btn btn-xs btn-secondary" (click)="createModal.hide()">
