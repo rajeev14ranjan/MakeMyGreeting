@@ -46,46 +46,7 @@
   width: 100%;
 }
 
-/* ------------------- Only the create part ------------------- */
-@media only screen and (min-width: 575px) {
-  .socialLink {
-    display: none;
-  }
-}
-
-#create {
-  font-size: 1.2em;
-  position: fixed;
-  bottom: 6%;
-  right: 6vw;
-  color: #a3a1a1;
-  background-color: #424242;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 15px;
-  vertical-align: middle;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-}
-
-.inbl {
-  display: inline-block;
-}
-.textJustify {
-  text-align: justify;
-}
-
-.bb {
-  box-sizing: border-box;
-}
-
-.half {
-  width: 50%;
-}
-
-.deflt {
-  border: 1px solid #ced4da;
-  vertical-align: inherit;
-  width: 100%;
+.error {
+  font-family: consolas monospace;
+  color: red;
 }
