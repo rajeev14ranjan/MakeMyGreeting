@@ -219,7 +219,7 @@ export class AppComponent implements OnInit {
     return paramValue;
   }
 
-  // **********************Only the create part*************************
+  // **********************Only for the create part*************************
 
   public saveGreetings() {
     if (!this.allowCreateLinks) {
