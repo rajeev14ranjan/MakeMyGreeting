@@ -7,7 +7,7 @@ import { ModalDirective } from "ngx-bootstrap/modal";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
   public receiverName = "";
@@ -22,19 +22,18 @@ export class AppComponent implements OnInit {
   public greetingPlaceholder = "{{Default}}";
 
   // Default Values to be loaded
-  private defaultReceiverName = "You";
-  private defaultSenderName = "MakeMyGreeting";
   private defaultGreeting = {
     HNY:
       "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
     HBD:
-      "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !"
+      "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
   };
-  private defaultType = "HNY";
+
   private songCount = {
     HNY: 5,
-    HBD: 4
+    HBD: 4,
   };
+
   private untrackableKey = "key_untracakable";
 
   // Flags
@@ -46,7 +45,7 @@ export class AppComponent implements OnInit {
 
   // http Options for Post call
   public httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "application/json" })
+    headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
 
   constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {
@@ -118,7 +117,7 @@ export class AppComponent implements OnInit {
     const postData = {
       id: id,
       ut: this.untrackable,
-      action: "getgreeting"
+      action: "getgreeting",
     };
 
     this.post(postData, true).subscribe(
@@ -148,7 +147,7 @@ export class AppComponent implements OnInit {
           this.initializeError();
         }
       },
-      error => this.initializeError()
+      (error) => this.initializeError()
     );
   }
 
@@ -174,7 +173,7 @@ export class AppComponent implements OnInit {
     let paramValue = "";
     if (url && url.includes("?")) {
       const httpParam = new HttpParams({
-        fromString: url.split("?")[1]
+        fromString: url.split("?")[1],
       });
       paramValue = httpParam.get(key);
     }

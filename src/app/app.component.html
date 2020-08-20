@@ -1,16 +1,18 @@
 <div class="center">
   <div *ngIf="!showMessage" class="loader" [innerHtml]="initialMessage"></div>
   <div [hidden]="!showMessage">
-    <p style="font-size: 1.2em; padding-top:0.4em;">Hey {{ receiverName }} !</p>
+    <p style="font-size: 1.2em; padding-top: 0.4em;">
+      Hey {{ receiverName }} !
+    </p>
     <p class="textJustify">{{ greeting }}</p>
     <img
       *ngIf="visibleFor('HNY')"
-      style="width:80%;max-width: 500px;"
+      style="width: 80%; max-width: 500px;"
       src="assets/img/year.png"
     />
     <balloons *ngIf="visibleFor('HBD')"></balloons>
 
-    <p style="font-size: 1.2em">
+    <p style="font-size: 1.2em;">
       From<br />
       {{ senderName }}
     </p>
@@ -19,7 +21,7 @@
       {{ isMute ? "🔇" : "🔊" }}
     </button>
 
-    <audio id="songPlayer" (ended)="onSongEnded()" style="display: none">
+    <audio id="songPlayer" (ended)="onSongEnded()" style="display: none;">
       <source src="" type="audio/mpeg" />
     </audio>
   </div>
