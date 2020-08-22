@@ -1,9 +1,7 @@
 <div class="center">
   <div *ngIf="!showMessage" class="loader" [innerHtml]="initialMessage"></div>
   <div [hidden]="!showMessage">
-    <p style="font-size: 1.2em; padding-top: 0.4em;">
-      Hey {{ receiverName }} !
-    </p>
+    <p style="font-size: 22pt; padding-top: 9pt;">Hey {{ receiverName }} !</p>
     <p class="textJustify">{{ greeting }}</p>
     <img
       *ngIf="visibleFor('HNY')"
@@ -12,7 +10,7 @@
     />
     <balloons *ngIf="visibleFor('HBD')"></balloons>
 
-    <p style="font-size: 1.2em;">
+    <p style="font-size: 22pt;">
       From<br />
       {{ senderName }}
     </p>

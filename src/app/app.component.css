@@ -1,9 +1,24 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 12pt;
+}
+
+.textJustify {
+  line-height: 30pt;
+}
+
 .center {
   width: 90vw;
   height: 90vh;
-  font-size: 1.6em;
+  font-size: 20pt;
   margin: auto;
-  padding: 20px 15px;
+  padding: 15pt 11pt;
   font-weight: 300;
   position: relative;
   color: white;
@@ -20,6 +35,10 @@
   text-decoration: none;
   text-align: center;
   outline: none;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .loader {

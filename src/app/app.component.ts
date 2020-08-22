@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { DomSanitizer } from "@angular/platform-browser";
-import { ModalDirective } from "ngx-bootstrap/modal";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-root",
@@ -70,6 +70,15 @@ export class AppComponent implements OnInit {
     this.initialMessage = `<code>Greeting couldn't be loaded! <br/> Please try again!</code>`;
   }
 
+  private initialWithMock() {
+    let m = "Mock User";
+    this.receiverName = m;
+    this.senderName = m;
+    this.greeting = this.defaultGreeting[this.greetingType];
+    this.displayType = this.greetingType;
+    this.showMessage = true;
+  }
+
   public onSongEnded() {
     this.isMute = true;
     this.generateNextSongSrc();
@@ -110,7 +119,7 @@ export class AppComponent implements OnInit {
   // Called to get greeting from the server if there is a valid Id
   public getGreeting(id: string) {
     if (!id) {
-      this.initializeError();
+      environment.production ? this.initializeError() : this.initialWithMock();
       return;
     }
 
