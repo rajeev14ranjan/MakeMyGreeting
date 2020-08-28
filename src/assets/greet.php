@@ -152,20 +152,24 @@ function get_tracking($data){
 function delete_ids($data){
     global $connection;
 
-    $ids = array_map('mysql_real_escape_string', $data["ids"]);    
+    $ids = $data["ids"];
 
-    $query="DELETE FROM greetingtb WHERE id IN (" . implode(',', $ids) . ")";         
+    $query="DELETE FROM greetingtb WHERE id IN ('" 
+     . implode("','",  $ids) 
+     . "')";
 
     if(mysqli_query($connection, $query))
     {
         $response=array(
-            'status' => 1
+            'status' => 1,
+            'query' => $query
         );
     }
     else
     {
         $response=array(
             'status' => 0,
+            'query' => $query
         );
     }
     
