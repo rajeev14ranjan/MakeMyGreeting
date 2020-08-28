@@ -25,8 +25,12 @@
 
 <!------------------- Only the create part ------------------->
 
-<button *ngIf="allowCreateLinks" id="create" (click)="openCreateGreetingModal()">
+<button *ngIf="allowCreateLinks" class="act-btn push-right" (click)="openCreateGreetingModal()">
   {{ isPreview ? 'This is a Preview, Continue editing' : 'Create' }}
+</button>
+
+<button *ngIf="allowTracking" class="act-btn push-left" (click)="openTrackingModal()">
+  Track
 </button>
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks" role="dialog"
@@ -126,6 +130,37 @@
           Copy Link
         </button>
         <button class="btn btn-xs btn-secondary" (click)="createModal.hide()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #trackModal="bs-modal" class="modal fade" tabindex="-1" *ngIf="allowCreateLinks" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left" style="line-height: 1;">
+          Tracking Details
+        </h4>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: auto; width: 100%;">
+        <div *ngIf="!trackingDetails.length">
+          Loading tracking details...
+        </div>
+        <div *ngIf="trackingDetails.length">
+                <a *ngFor="let track of trackingDetails" 
+                    class="link" 
+                    [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + track.id)" target="_blank">
+                  <span class="receiver">{{track.receiver}}</span>
+                  <span class="count" [ngClass]="track.count=='0'?'bg-r':'bg-g'">{{track.count}}</span> 
+                </a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-xs btn-secondary" (click)="trackModal.hide()">
           Close
         </button>
       </div>

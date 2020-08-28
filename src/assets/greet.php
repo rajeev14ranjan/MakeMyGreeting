@@ -59,6 +59,9 @@ function handle_post_request(){
         case 'savegreeting':
             save_greeting($data);
             break;
+        case 'gettracking':
+            get_tracking($data);
+            break;
         default:
             // Invalid Request Method
             header("HTTP/1.0 405 Method Not Allowed");
@@ -125,6 +128,24 @@ function get_greeting($data){
     header('Content-Type: application/json');
     echo json_encode($response);
 
+}
+
+function get_tracking($data){
+    global $connection;
+    
+    $pwd = mysqli_real_escape_string($connection, $data["pwd"]);    
+
+    $query="SELECT id, receiver, count FROM greetingtb ORDER BY time DESC LIMIT 0, 35";         
+    
+    $response=array();
+    $result=mysqli_query($connection, $query);
+    while($row=mysqli_fetch_assoc($result))
+    {
+        $response[]=$row;
+    }
+    
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
 
 
