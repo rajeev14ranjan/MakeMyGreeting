@@ -58,7 +58,12 @@ export class AppComponent implements OnInit {
 
   // Mode to create new Greeting Links
   public allowCreateLinks = true;
+
+  //Tracking
   public allowTracking = false;
+
+  //Deleting ids
+  public deleteIds = new Set();
 
   // http Options for Post call
   public httpOptions = {
@@ -66,15 +71,7 @@ export class AppComponent implements OnInit {
   };
 
   //Tracking details
-  public trackingDetails = [
-    { id: "wd24y2qfr8vu", receiver: "Birju", count: 1 },
-    { id: "5bswv3qfigvc", receiver: "Harshit", count: 4 },
-    { id: "h5gqenqfguun", receiver: "Mock User", count: 0 },
-    { id: "5bswv3qfigvc", receiver: "Harshit", count: 4 },
-    { id: "h5gqenqfguun", receiver: "Mock User", count: 10 },
-    { id: "5bswv3qfigvc", receiver: "Harshit", count: 4 },
-    { id: "h5gqenqfguun", receiver: "Mock User", count: 2 },
-  ];
+  public trackingDetails = [];
 
   @ViewChild("createModal") createModal: ModalDirective;
   @ViewChild("trackModal") trackModal: ModalDirective;
@@ -284,8 +281,13 @@ export class AppComponent implements OnInit {
     this.isPreview = false;
   }
 
+  public selectForDelete(e: any, id: string) {
+    e.target.checked ? this.deleteIds.add(id) : this.deleteIds.delete(id);
+  }
+
   public openTrackingModal() {
     this.trackingDetails.length = 0;
+    this.deleteIds.clear();
     if (!this.allowTracking) return;
 
     this.trackModal.show();
@@ -298,6 +300,22 @@ export class AppComponent implements OnInit {
       if (data && data.length) {
         console.log(data);
         this.trackingDetails = data;
+      }
+    });
+  }
+
+  public deleteSelectedIds() {
+    const postData = {
+      action: "deleteids",
+      ids: Array.from(this.deleteIds),
+    };
+
+    this.post(postData).subscribe((data: any) => {
+      if (data && data.status) {
+        this.trackingDetails = this.trackingDetails.filter(
+          ({ id }) => !this.deleteIds.has(id)
+        );
+        this.deleteIds.clear();
       }
     });
   }

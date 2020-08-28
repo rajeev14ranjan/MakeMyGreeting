@@ -62,6 +62,9 @@ function handle_post_request(){
         case 'gettracking':
             get_tracking($data);
             break;
+        case 'deleteids':
+            delete_ids($data);
+            break;
         default:
             // Invalid Request Method
             header("HTTP/1.0 405 Method Not Allowed");
@@ -131,9 +134,7 @@ function get_greeting($data){
 }
 
 function get_tracking($data){
-    global $connection;
-    
-    $pwd = mysqli_real_escape_string($connection, $data["pwd"]);    
+    global $connection;   
 
     $query="SELECT id, receiver, count FROM greetingtb ORDER BY time DESC LIMIT 0, 35";         
     
@@ -142,6 +143,30 @@ function get_tracking($data){
     while($row=mysqli_fetch_assoc($result))
     {
         $response[]=$row;
+    }
+    
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+
+function delete_ids($data){
+    global $connection;
+
+    $ids = array_map('mysql_real_escape_string', $data["ids"]);    
+
+    $query="DELETE FROM greetingtb WHERE id IN (" . implode(',', $ids) . ")";         
+
+    if(mysqli_query($connection, $query))
+    {
+        $response=array(
+            'status' => 1
+        );
+    }
+    else
+    {
+        $response=array(
+            'status' => 0,
+        );
     }
     
     header('Content-Type: application/json');

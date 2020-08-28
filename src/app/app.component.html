@@ -151,15 +151,22 @@
           Loading tracking details...
         </div>
         <div *ngIf="trackingDetails.length">
-                <a *ngFor="let track of trackingDetails" 
-                    class="link" 
-                    [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + track.id)" target="_blank">
-                  <span class="receiver">{{track.receiver}}</span>
-                  <span class="count" [ngClass]="track.count=='0'?'bg-r':'bg-g'">{{track.count}}</span> 
-                </a>
+          <span class="link-box" *ngFor="let track of trackingDetails">
+            <input type="checkbox" (change)="selectForDelete($event,track.id)" />
+            <a class="link"
+              [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + track.id)" target="_blank">
+
+              <span class="receiver">{{track.receiver}}</span>
+
+              <span class="count" [ngClass]="track.count=='0'?'bg-r':'bg-g'">{{track.count}}</span>
+            </a>
+          </span>
         </div>
       </div>
       <div class="modal-footer">
+        <button *ngIf="this.deleteIds.size" style="float:left" class="btn btn-xs btn-danger" (click)="deleteSelectedIds()">
+          Delete {{this.deleteIds.size}}
+        </button>
         <button class="btn btn-xs btn-secondary" (click)="trackModal.hide()">
           Close
         </button>
