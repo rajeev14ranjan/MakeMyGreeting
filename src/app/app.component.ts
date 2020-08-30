@@ -61,6 +61,8 @@ export class AppComponent implements OnInit {
 
   //Tracking
   public allowTracking = false;
+  public visitingDetails = null;
+  public showVisitDetails = false;
 
   //Deleting ids
   public deleteIds = new Set();
@@ -191,13 +193,17 @@ export class AppComponent implements OnInit {
         this.generateNextSongSrc();
 
         // Saving the response data for caching
-        if (sessionStorage && !sessionStorage.getItem(postData.id)) {
-          sessionStorage.setItem(postData.id, JSON.stringify(data));
-        }
+        this.saveGreetingToSession(postData.id, data);
       } else {
         this.initializeDefault();
       }
     });
+  }
+
+  public saveGreetingToSession(id: string, data: any) {
+    if (sessionStorage && !sessionStorage.getItem(id)) {
+      sessionStorage.setItem(id, JSON.stringify(data));
+    }
   }
 
   public togglePlayer() {
@@ -285,9 +291,34 @@ export class AppComponent implements OnInit {
     e.target.checked ? this.deleteIds.add(id) : this.deleteIds.delete(id);
   }
 
+  public selectForDetails(id: string) {
+    const postData = {
+      id: id,
+      ut: true,
+      action: "getgreeting",
+    };
+
+    this.showVisitDetails = true;
+    this.visitingDetails = null;
+    this.post(postData, true).subscribe((data: any) => {
+      if (data && data[0]) {
+        this.visitingDetails = {
+          ...data[0],
+          id,
+          greeting: this.greetingPlaceholder
+            ? this.defaultGreeting[data[0].type]
+            : data[0].greeting,
+        };
+        // Saving the response data for caching
+        this.saveGreetingToSession(id, data);
+      }
+    });
+  }
+
   public openTrackingModal() {
     this.trackingDetails.length = 0;
     this.deleteIds.clear();
+    this.showVisitDetails = false;
     if (!this.allowTracking) return;
 
     this.trackModal.show();
@@ -302,6 +333,11 @@ export class AppComponent implements OnInit {
         this.trackingDetails = data;
       }
     });
+  }
+
+  public closeTrackModal() {
+    if (this.showVisitDetails) this.showVisitDetails = false;
+    else this.trackModal.hide();
   }
 
   public deleteSelectedIds() {

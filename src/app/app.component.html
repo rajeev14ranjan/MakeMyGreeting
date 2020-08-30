@@ -143,33 +143,45 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title pull-left" style="line-height: 1;">
-          Tracking Details
+          {{showVisitDetails ? 'Visit' : 'Tracking'}} Details
         </h4>
       </div>
       <div class="modal-body" style="max-height: 500px; overflow-y: auto; width: 100%;">
-        <div *ngIf="!trackingDetails.length">
+        <div *ngIf="showVisitDetails">
+          <div *ngIf="!visitingDetails">
+            Loading visiting details...
+          </div>
+          <div *ngIf="visitingDetails">
+            <p>{{visitingDetails.receiver}} opened greeting {{visitingDetails.count}} times, Last opened on {{visitingDetails.last}}</p>
+            <p>Greeting: {{visitingDetails.greeting}}</p>
+            <p>Type: {{visitingDetails.type}}</p>
+            <p>Sender: {{visitingDetails.sender}}</p>
+            <p><a class="link-box link" style="margin-left: 0;"
+                [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + visitingDetails.id)"
+                target="_blank">Open Greeting</a></p>
+          </div>
+
+        </div>
+        <div *ngIf="!trackingDetails.length && !showVisitDetails">
           Loading tracking details...
         </div>
-        <div *ngIf="trackingDetails.length">
+        <div [hidden]="!trackingDetails.length || showVisitDetails">
           <span class="link-box" *ngFor="let track of trackingDetails">
             <input type="checkbox" (change)="selectForDelete($event,track.id)" />
-            <a class="link" [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + track.id)"
-              target="_blank">
-
+            <a class="link" (click)="selectForDetails(track.id)">
               <span class="receiver">{{track.receiver}}</span>
-
               <span class="count" [ngClass]="track.count=='0'?'bg-r':'bg-g'">{{track.count}}</span>
             </a>
           </span>
         </div>
       </div>
       <div class="modal-footer">
-        <button *ngIf="this.deleteIds.size" style="position: absolute;
+        <button *ngIf="this.deleteIds.size && !showVisitDetails" style="position: absolute;
         left: 16px;" class="btn btn-xs btn-danger" (click)="deleteSelectedIds()">
           Delete {{this.deleteIds.size}}
         </button>
-        <button class="btn btn-xs btn-secondary" (click)="trackModal.hide()">
-          Close
+        <button class="btn btn-xs btn-secondary" (click)="closeTrackModal()">
+          {{showVisitDetails ? 'Back' : 'Close'}}
         </button>
       </div>
     </div>
