@@ -111,11 +111,10 @@ function get_greeting($data){
     $id = mysqli_real_escape_string($connection, $data["id"]);
     $ut = mysqli_real_escape_string($connection, $data["ut"]);
     
-
-    $query="SELECT sender, receiver, greeting, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";
+    $query="SELECT sender, receiver, greeting, last, count, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";
     
     if(!$ut){
-        $query="SELECT sender, receiver, greeting, last, count, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";
+        $query="SELECT sender, receiver, greeting, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";
         $update_query  = "UPDATE greetingtb set count = count + 1, last= '".date("Y-m-d H:i:s")."' WHERE id = '". $id."'";
         $result2 = mysqli_query($connection, $update_query);
     }
@@ -137,7 +136,7 @@ function get_greeting($data){
 function get_tracking($data){
     global $connection;   
 
-    $query="SELECT id, receiver, count, last FROM greetingtb ORDER BY time DESC LIMIT 0, 200";         
+    $query="SELECT id, receiver, count, time FROM greetingtb WHERE id !='MSGFRMRAJEEV' ORDER BY time DESC LIMIT 0, 200";         
     
     $response=array();
     $result=mysqli_query($connection, $query);
