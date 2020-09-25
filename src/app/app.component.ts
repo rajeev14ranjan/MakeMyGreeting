@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.getQueryParam("id");
-    this.allowTracking = this.id === "MSGFRMRAJEEV";
+    this.allowTracking = this.hash(this.id) === -1599232037;
     this.getGreeting(this.id);
     this.newGreeting = this.defaultGreeting[this.defaultType];
     this.songPlayer = this.getSongPlayerElt();
@@ -321,6 +321,7 @@ export class AppComponent implements OnInit {
     this.trackingDetails.length = 0;
     this.deleteIds.clear();
     this.showVisitDetails = false;
+    document.getElementById("sorter")["checked"] = false;
     if (!this.allowTracking) return;
 
     this.trackModal.show();
@@ -344,8 +345,6 @@ export class AppComponent implements OnInit {
           : a.index - b.index
       )
       .map((detail) => detail);
-
-    console.log(this.trackingDetails);
   }
 
   public trackByFn(_, item: any) {
@@ -391,6 +390,18 @@ export class AppComponent implements OnInit {
     const result = document.execCommand("copy");
     document.body.removeChild(input);
     return result;
+  }
+
+  public hash(s: string) {
+    let h = 0,
+      i,
+      c;
+    for (i = 0; i < s.length; i++) {
+      c = s.charCodeAt(i);
+      h = (h << 5) - h + c;
+      h |= 0;
+    }
+    return h;
   }
 
   public createModalClosed() {

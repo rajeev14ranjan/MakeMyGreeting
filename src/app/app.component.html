@@ -145,8 +145,8 @@
         <h4 class="modal-title pull-left" style="line-height: 1;">
           {{showVisitDetails ? 'Visit' : 'Tracking'}} Details
         </h4>
-        <span *ngIf="!showVisitDetails" style="float: right;">
-          <input type="checkbox" (change)="sortByLastSeen($event)" />
+        <span [hidden]="showVisitDetails" style="float: right;">
+          <input type="checkbox" id="sorter" [ngModel]="false" (change)="sortByLastSeen($event)" />
           <span class="receiver"> by last seen</span>
         </span>
       </div>
