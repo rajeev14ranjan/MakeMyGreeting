@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ModalDirective } from "ngx-bootstrap/modal";
-import { last } from "@angular/router/src/utils/collection";
 
 @Component({
   selector: "app-root",
@@ -306,7 +305,7 @@ export class AppComponent implements OnInit {
         this.visitingDetails = {
           ...data[0],
           id,
-          last: data[0].last ? new Date(data[0].last) : data[0].last,
+          last: data[0].last ? new Date(`${data[0].last} GMT+0`) : data[0].last,
           greeting: this.greetingPlaceholder
             ? this.defaultGreeting[data[0].type]
             : data[0].greeting,
