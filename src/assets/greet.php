@@ -136,7 +136,7 @@ function get_greeting($data){
 function get_tracking($data){
     global $connection;   
 
-    $query="SELECT id, receiver, count, time FROM greetingtb WHERE id !='MSGFRMRAJEEV' ORDER BY time DESC LIMIT 0, 200";         
+    $query="SELECT id, receiver, count, last FROM greetingtb WHERE id !='MSGFRMRAJEEV' ORDER BY time DESC LIMIT 0, 200";         
     
     $response=array();
     $result=mysqli_query($connection, $query);

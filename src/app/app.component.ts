@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ModalDirective } from "ngx-bootstrap/modal";
+import { last } from "@angular/router/src/utils/collection";
 
 @Component({
   selector: "app-root",
@@ -305,6 +306,7 @@ export class AppComponent implements OnInit {
         this.visitingDetails = {
           ...data[0],
           id,
+          last: data[0].last ? new Date(data[0].last) : data[0].last,
           greeting: this.greetingPlaceholder
             ? this.defaultGreeting[data[0].type]
             : data[0].greeting,
@@ -329,10 +331,25 @@ export class AppComponent implements OnInit {
 
     this.post(postData).subscribe((data: any) => {
       if (data && data.length) {
-        console.log(data);
-        this.trackingDetails = data;
+        this.trackingDetails = data.map((d, index) => ({ ...d, index }));
       }
     });
+  }
+
+  public sortByLastSeen(event: any) {
+    this.trackingDetails = this.trackingDetails
+      .sort((a, b) =>
+        event.target.checked
+          ? Date.parse(b.last) - Date.parse(a.last)
+          : a.index - b.index
+      )
+      .map((detail) => detail);
+
+    console.log(this.trackingDetails);
+  }
+
+  public trackByFn(_, item: any) {
+    return item.id;
   }
 
   public closeTrackModal() {
