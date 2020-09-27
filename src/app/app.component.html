@@ -6,6 +6,7 @@
     </p>
     <p class="textJustify">{{ isPreview ? newGreeting : greeting }}</p>
     <img *ngIf="visibleFor('HNY')" style="width:80%;max-width: 500px;" src="assets/img/year.png" />
+    <img *ngIf="visibleFor('CNG')" style="width:80%;max-width: 500px;" src="assets/img/cng.png" />
     <balloons *ngIf="visibleFor('HBD')"></balloons>
 
     <p style="font-size: 1.2em">
@@ -29,7 +30,7 @@
   {{ isPreview ? 'This is a Preview, Continue editing' : 'Create' }}
 </button>
 
-<button *ngIf="allowTracking" class="act-btn push-left" (click)="openTrackingModal()">
+<button *ngIf="allowTracking && !isPreview" class="act-btn push-left" (click)="openTrackingModal()">
   Track
 </button>
 
@@ -52,6 +53,7 @@
               <select class="form-control mb10" (change)="loadDefaultWish()" [(ngModel)]="newGreetingType">
                 <option value="HNY">Happy New Year</option>
                 <option value="HBD">Happy Birthday</option>
+                <option value="CNG">Congratulations</option>
               </select>
             </div>
             <div class="half pl5 inbl bb">

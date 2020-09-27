@@ -30,9 +30,11 @@ export class AppComponent implements OnInit {
       "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
     HBD:
       "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
+    CNG: "Congratulations on your achievement",
   };
   private defaultType = "HNY";
   private songCount = {
+    CNG: 1,
     HNY: 5,
     HBD: 4,
   };
@@ -72,6 +74,14 @@ export class AppComponent implements OnInit {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
 
+  //Video Formats
+  public videoTypes = ["mp4", "webm", "ogg"];
+  public videoTitle = {
+    HNY: "firework",
+    HBD: "firework",
+    CNG: "confetti",
+  };
+
   //Tracking details
   public trackingDetails = [];
 
@@ -91,6 +101,26 @@ export class AppComponent implements OnInit {
     this.removeLogo();
   }
 
+  public getVideoSource(src: string, type: string) {
+    let source = document.createElement("source");
+    source.setAttribute("src", src);
+    source.setAttribute("type", type);
+    return source;
+  }
+
+  public prepareVideoBackground() {
+    let videoElt = <HTMLVideoElement>document.getElementById("videoBG");
+    videoElt.innerHTML = "";
+    this.videoTypes.forEach((type) => {
+      videoElt.appendChild(
+        this.getVideoSource(
+          `assets/img/${this.videoTitle[this.greetingType]}.${type}`,
+          `video/${type}`
+        )
+      );
+    });
+  }
+
   public getSongPlayerElt(): HTMLAudioElement {
     return <HTMLAudioElement>document.getElementById("songPlayer");
   }
@@ -102,6 +132,7 @@ export class AppComponent implements OnInit {
     this.greetingType = this.displayType = this.defaultType;
     this.showMessage = true;
     this.generateNextSongSrc();
+    this.prepareVideoBackground();
   }
 
   public visibleFor(type: string): Boolean {
@@ -194,6 +225,9 @@ export class AppComponent implements OnInit {
 
         // Saving the response data for caching
         this.saveGreetingToSession(postData.id, data);
+
+        //preparing video backgroung as per greetingtype
+        this.prepareVideoBackground();
       } else {
         this.initializeDefault();
       }
@@ -306,9 +340,10 @@ export class AppComponent implements OnInit {
           ...data[0],
           id,
           last: data[0].last ? new Date(`${data[0].last} GMT+0`) : data[0].last,
-          greeting: this.greetingPlaceholder
-            ? this.defaultGreeting[data[0].type]
-            : data[0].greeting,
+          greeting:
+            data[0].greeting === this.greetingPlaceholder
+              ? this.defaultGreeting[data[0].type]
+              : data[0].greeting,
         };
         // Saving the response data for caching
         this.saveGreetingToSession(id, data);
