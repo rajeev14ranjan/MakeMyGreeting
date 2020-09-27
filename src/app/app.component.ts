@@ -27,9 +27,11 @@ export class AppComponent implements OnInit {
       "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
     HBD:
       "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
+    CNG: "Congratulations on your achievement",
   };
 
   private songCount = {
+    CNG: 1,
     HNY: 5,
     HBD: 4,
   };
@@ -48,6 +50,14 @@ export class AppComponent implements OnInit {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
 
+  //Video Formats
+  public videoTypes = ["mp4", "webm", "ogg"];
+  public videoTitle = {
+    HNY: "firework",
+    HBD: "firework",
+    CNG: "confetti",
+  };
+
   constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {
     this.untrackable = localStorage.getItem(this.untrackableKey) === "true";
   }
@@ -60,6 +70,26 @@ export class AppComponent implements OnInit {
     this.getGreeting(this.getQueryParam("id"));
     this.songPlayer = this.getSongPlayerElt();
     this.removeLogo();
+  }
+
+  public getVideoSource(src: string, type: string) {
+    let source = document.createElement("source");
+    source.setAttribute("src", src);
+    source.setAttribute("type", type);
+    return source;
+  }
+
+  public prepareVideoBackground() {
+    let videoElt = <HTMLVideoElement>document.getElementById("videoBG");
+    videoElt.innerHTML = "";
+    this.videoTypes.forEach((type) => {
+      videoElt.appendChild(
+        this.getVideoSource(
+          `assets/img/${this.videoTitle[this.greetingType]}.${type}`,
+          `video/${type}`
+        )
+      );
+    });
   }
 
   public getSongPlayerElt(): HTMLAudioElement {
@@ -152,6 +182,9 @@ export class AppComponent implements OnInit {
           if (sessionStorage && !sessionStorage.getItem(postData.id)) {
             sessionStorage.setItem(postData.id, JSON.stringify(data));
           }
+
+          //Rendering video backgroud as per greeting type
+          this.prepareVideoBackground();
         } else {
           this.initializeError();
         }
