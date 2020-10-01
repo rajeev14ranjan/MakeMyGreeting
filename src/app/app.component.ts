@@ -94,7 +94,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.getQueryParam("id");
-    this.allowTracking = this.hash(this.id) === -1599232037;
     this.getGreeting(this.id);
     this.newGreeting = this.defaultGreeting[this.defaultType];
     this.songPlayer = this.getSongPlayerElt();
@@ -145,12 +144,11 @@ export class AppComponent implements OnInit {
   }
 
   public generateNextSongSrc() {
-    const lastSong =
-      parseInt(sessionStorage.getItem("key_songId"), 10) ||
-      Math.floor(Math.random() * this.songCount[this.greetingType]);
+    let songStorageId = `key_songId_${this.greetingType}`;
+    const lastSong = parseInt(localStorage.getItem(songStorageId), 10) || 0;
     const nextSong = (lastSong + 1) % this.songCount[this.greetingType];
     this.songSrc = `assets/songs/${this.greetingType}/song${nextSong}.mp3`;
-    sessionStorage.setItem("key_songId", nextSong.toString());
+    localStorage.setItem(songStorageId, nextSong.toString());
     if (!this.songPlayer) {
       this.songPlayer = this.getSongPlayerElt();
     }
@@ -200,7 +198,7 @@ export class AppComponent implements OnInit {
     const postData = {
       id: id,
       ut: this.untrackable,
-      action: "getgreeting",
+      action: "getagreeting",
     };
 
     this.post(postData, true).subscribe((data: any) => {
@@ -209,6 +207,7 @@ export class AppComponent implements OnInit {
         this.receiverName = response.receiver;
         this.senderName = response.sender;
         this.greetingType = response.type;
+        this.allowTracking = response.atf;
         this.greeting =
           response.greeting === this.greetingPlaceholder
             ? this.defaultGreeting[response.type]
@@ -254,12 +253,13 @@ export class AppComponent implements OnInit {
   public post(postData: any, caching = false): Observable<any> {
     if (caching && sessionStorage && sessionStorage.getItem(postData.id)) {
       return of(JSON.parse(sessionStorage.getItem(postData.id)));
-    } else {
-      postData["key"] = Math.floor(Date.now() / 1000)
-        .toString(36)
-        .toUpperCase();
-      return this._http.post("./api/greet.php", postData, this.httpOptions);
     }
+
+    postData["key"] = Math.floor(Date.now() / 1000)
+      .toString(36)
+      .toUpperCase();
+
+    return this._http.post("./api/greet.php", postData, this.httpOptions);
   }
 
   public getQueryParam(key: string) {
@@ -292,17 +292,24 @@ export class AppComponent implements OnInit {
       action: "savegreeting",
     };
 
-    this.post(postData).subscribe((data: any) => {
-      if (data && data.status) {
-        this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
-        const shareMsg = encodeURIComponent(`Hi,
+    this.linkGenerated = true;
+    this.newLink = "";
+
+    this.post(postData).subscribe(
+      (data: any) => {
+        if (data && data.status) {
+          this.newLink = `https://makemygreeting.000webhostapp.com/?id=${data.greetingId}`;
+          const shareMsg = encodeURIComponent(`Hi,
        I'm sending a ${this.newGreetingType} greeting for you, Check it out: ${this.newLink}`);
-        this.whatsappMsg = "whatsapp://send?text=" + shareMsg;
-        this.fbMsg = "fb-messenger://share/?link=" + shareMsg;
-        this.linkGenerated = true;
-        this.isPreview = false;
+          this.whatsappMsg = "whatsapp://send?text=" + shareMsg;
+          this.fbMsg = "fb-messenger://share/?link=" + shareMsg;
+          this.isPreview = false;
+        }
+      },
+      (error: any) => {
+        this.linkGenerated = false;
       }
-    });
+    );
   }
 
   public showPreview() {
@@ -424,18 +431,6 @@ export class AppComponent implements OnInit {
     const result = document.execCommand("copy");
     document.body.removeChild(input);
     return result;
-  }
-
-  public hash(s: string) {
-    let h = 0,
-      i,
-      c;
-    for (i = 0; i < s.length; i++) {
-      c = s.charCodeAt(i);
-      h = (h << 5) - h + c;
-      h |= 0;
-    }
-    return h;
   }
 
   public createModalClosed() {

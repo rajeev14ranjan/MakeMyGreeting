@@ -56,6 +56,9 @@ function handle_post_request(){
         case 'getgreeting':
             get_greeting($data);
             break;
+        case 'getagreeting':
+            get_admin_greeting($data);
+            break;
         case 'savegreeting':
             save_greeting($data);
             break;
@@ -105,6 +108,26 @@ function save_greeting($data){
     echo json_encode($response);
 }
 
+function get_admin_greeting($data){
+    global $connection;
+    
+    $id = mysqli_real_escape_string($connection, $data["id"]);
+    $ut = mysqli_real_escape_string($connection, $data["ut"]);
+
+    $query= "SELECT g.sender, g.receiver, g.greeting, g.last, g.count, g.type, IF(m.meta IS NULL, FALSE, TRUE) as atf FROM greetingtb g LEFT JOIN metadata m ON (g.id = m.value) WHERE g.id = '". $id."' AND m.meta = 1 LIMIT 1; ";
+
+    $response=array();
+    $result=mysqli_query($connection, $query);
+    while($row=mysqli_fetch_assoc($result))
+    {
+        $response[]=$row;
+    }
+    
+    
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+
 function get_greeting($data){
     global $connection;
     
@@ -136,7 +159,7 @@ function get_greeting($data){
 function get_tracking($data){
     global $connection;   
 
-    $query="SELECT id, receiver, count, last FROM greetingtb WHERE id !='MSGFRMRAJEEV' ORDER BY time DESC LIMIT 0, 200";         
+    $query ="SELECT g.id, g.receiver, g.count, g.last FROM greetingtb g JOIN metadata m ON g.id != m.value WHERE m.meta = 1 ORDER BY time DESC LIMIT 0, 200";        
     
     $response=array();
     $result=mysqli_query($connection, $query);

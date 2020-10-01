@@ -57,15 +57,15 @@
               </select>
             </div>
             <div class="half pl5 inbl bb">
-              <div class="half pr5 inbl">
+              <div class="pr5 inbl" [ngClass]="allowTracking ? 'half':'full'">
                 <button class="btn deflt" (click)="loadDefaultWish()">
                   Reset
                 </button>
               </div>
-              <div class="half pl5 inbl">
+              <div *ngIf="allowTracking" class="half pl5 inbl">
                 <button class="btn deflt" [ngClass]="untrackable ? '' :
                   'btn-danger'" (click)="toggleTrackable()">
-                  {{ untrackable ? 'UnTrack' : 'Track' }}
+                  {{ untrackable ? 'No Track' : 'Track' }}
                 </button>
               </div>
             </div>
@@ -99,11 +99,16 @@
           </div>
         </ng-container>
         <ng-container *ngIf="linkGenerated">
+          <ng-container *ngIf="!newLink">
+            Generating sharable link...
+          </ng-container>
+          <ng-container *ngIf="newLink">
           <h5 class="text-info">Share this link with {{ newReceiver }}</h5>
           <br />
           <code>
             <a target="_blank" [href]="newLink">{{ newLink }}</a></code>
           <br /><br />
+        </ng-container>
         </ng-container>
       </div>
       <div class="modal-footer">
@@ -117,18 +122,18 @@
           Create Link
         </button>
 
-        <a [hidden]="!linkGenerated" class="socialLink" style="margin-right:
+        <a [hidden]="!linkGenerated || !newLink" class="socialLink" style="margin-right:
           5px" [href]="sanitize(fbMsg)">
           <img style="width:40px;height: 39px; border-radius: .25rem; border:
             1px solid;" src="assets/img/fb.png" />
         </a>
 
-        <a [hidden]="!linkGenerated" class="socialLink" style="margin-right:
+        <a [hidden]="!linkGenerated || !newLink" class="socialLink" style="margin-right:
           5px" [href]="sanitize(whatsappMsg)">
           <img style="width:40px;height: 38px; border-radius: .25rem" src="assets/img/whatsapp.png" />
         </a>
 
-        <button *ngIf="linkGenerated" class="btn btn-xs btn-info" (click)="copyLink()">
+        <button *ngIf="linkGenerated && newLink" class="btn btn-xs btn-info" (click)="copyLink()">
           Copy Link
         </button>
         <button class="btn btn-xs btn-secondary" (click)="createModal.hide()">

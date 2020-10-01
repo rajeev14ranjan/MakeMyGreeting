@@ -95,6 +95,10 @@
   width: 50%;
 }
 
+.full {
+  width: 100%;
+}
+
 .deflt {
   border: 1px solid #ced4da;
   vertical-align: inherit;
