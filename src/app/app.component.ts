@@ -65,6 +65,11 @@ export class AppComponent implements OnInit {
   public allowTracking = false;
   public visitingDetails = null;
   public showVisitDetails = false;
+  public trackingAuthentication = false;
+  public trackingPw = "";
+  public trackingDetails = [];
+  public trackingAuthKey = "auth_key_track";
+  private trackingHash = 1514221;
 
   //Deleting ids
   public deleteIds = new Set();
@@ -82,11 +87,9 @@ export class AppComponent implements OnInit {
     CNG: "confetti",
   };
 
-  //Tracking details
-  public trackingDetails = [];
-
   @ViewChild("createModal") createModal: ModalDirective;
   @ViewChild("trackModal") trackModal: ModalDirective;
+  @ViewChild("trackAuthModal") trackAuthModal: ModalDirective;
 
   constructor(private _http: HttpClient, private _sanitizer: DomSanitizer) {
     this.untrackable = localStorage.getItem(this.untrackableKey) === "true";
@@ -358,14 +361,31 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public checkTrackingAuth(): boolean {
+    let lastAuthKey = localStorage.getItem(this.trackingAuthKey);
+    if (lastAuthKey && this.hash(lastAuthKey) === this.trackingHash) {
+      this.trackingAuthentication = true;
+      return true;
+    }
+
+    this.trackingAuthentication =
+      this.hash(this.trackingPw) === this.trackingHash;
+    if (this.trackingAuthentication) {
+      localStorage.setItem(this.trackingAuthKey, this.trackingPw);
+    }
+    this.trackingPw = "";
+    return this.trackingAuthentication;
+  }
+
   public openTrackingModal() {
     this.trackingDetails.length = 0;
     this.deleteIds.clear();
     this.showVisitDetails = false;
     document.getElementById("sorter")["checked"] = false;
-    if (!this.allowTracking) return;
 
+    if (!this.allowTracking) return;
     this.trackModal.show();
+    if (!this.checkTrackingAuth()) return;
 
     const postData = {
       action: "gettracking",
@@ -443,5 +463,17 @@ export class AppComponent implements OnInit {
       this.fbMsg = "";
       this.removeLogo();
     }
+  }
+
+  public hash(s: string) {
+    let h = 0,
+      i,
+      c;
+    for (i = 0; i < s.length; i++) {
+      c = s.charCodeAt(i);
+      h = (h << 5) - h + c;
+      h |= 0;
+    }
+    return h;
   }
 } // End closing tag of component

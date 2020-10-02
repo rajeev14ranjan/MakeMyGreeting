@@ -78,6 +78,7 @@
   text-decoration: none;
   text-align: center;
   cursor: pointer;
+  max-width: 330px;
 }
 
 .inbl {

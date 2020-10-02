@@ -65,7 +65,7 @@
               <div *ngIf="allowTracking" class="half pl5 inbl">
                 <button class="btn deflt" [ngClass]="untrackable ? '' :
                   'btn-danger'" (click)="toggleTrackable()">
-                  {{ untrackable ? 'No Track' : 'Track' }}
+                  {{ untrackable ? 'Incog' : 'Track' }}
                 </button>
               </div>
             </div>
@@ -103,12 +103,12 @@
             Generating sharable link...
           </ng-container>
           <ng-container *ngIf="newLink">
-          <h5 class="text-info">Share this link with {{ newReceiver }}</h5>
-          <br />
-          <code>
+            <h5 class="text-info">Share this link with {{ newReceiver }}</h5>
+            <br />
+            <code>
             <a target="_blank" [href]="newLink">{{ newLink }}</a></code>
-          <br /><br />
-        </ng-container>
+            <br /><br />
+          </ng-container>
         </ng-container>
       </div>
       <div class="modal-footer">
@@ -152,27 +152,36 @@
         <h4 class="modal-title pull-left" style="line-height: 1;">
           {{showVisitDetails ? 'Visit' : 'Tracking'}} Details
         </h4>
-        <span [hidden]="showVisitDetails" style="float: right;">
+        <span [hidden]="showVisitDetails || !trackingAuthentication" style="float: right;">
           <input type="checkbox" id="sorter" [ngModel]="false" (change)="sortByLastSeen($event)" />
           <span class="receiver"> by last seen</span>
         </span>
       </div>
       <div class="modal-body" style="max-height: 500px; overflow-y: auto; width: 100%;">
-        <div *ngIf="showVisitDetails">
-          <div *ngIf="!visitingDetails">
-            Loading visiting details...
+        <ng-container *ngIf="!trackingAuthentication">
+          <label class="form-label text-info mb0" for="name">
+            Enter Password
+          </label>
+          <input class="form-control" type="password" spellcheck="false" maxlength="25" [(ngModel)]="trackingPw"
+            pattern="[0-9]{4}" inputmode="numeric" />
+        </ng-container>
+        <ng-container *ngIf="trackingAuthentication">
+          <div *ngIf="showVisitDetails">
+            <div *ngIf="!visitingDetails">
+              Loading visiting details...
+            </div>
+            <div *ngIf="visitingDetails">
+              <p>{{visitingDetails.receiver}} opened greeting {{visitingDetails.count}} times, Last opened on
+                {{visitingDetails.last | date: 'medium'}}</p>
+              <p>Greeting: {{visitingDetails.greeting}}</p>
+              <p>Type: {{visitingDetails.type}}</p>
+              <p>Sender: {{visitingDetails.sender}}</p>
+              <p><a class="link-box link" style="margin-left: 0;"
+                  [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + visitingDetails.id)"
+                  target="_blank">Open Greeting</a></p>
+            </div>
           </div>
-          <div *ngIf="visitingDetails">
-            <p>{{visitingDetails.receiver}} opened greeting {{visitingDetails.count}} times, Last opened on {{visitingDetails.last | date: 'medium'}}</p>
-            <p>Greeting: {{visitingDetails.greeting}}</p>
-            <p>Type: {{visitingDetails.type}}</p>
-            <p>Sender: {{visitingDetails.sender}}</p>
-            <p><a class="link-box link" style="margin-left: 0;"
-                [href]="sanitize('https://makemygreeting.000webhostapp.com/?id=' + visitingDetails.id)"
-                target="_blank">Open Greeting</a></p>
-          </div>
-
-        </div>
+        </ng-container>
         <div *ngIf="!trackingDetails.length && !showVisitDetails">
           Loading tracking details...
         </div>
@@ -190,6 +199,8 @@
         <button *ngIf="this.deleteIds.size && !showVisitDetails" style="position: absolute;
         left: 16px;" class="btn btn-xs btn-danger" (click)="deleteSelectedIds()">
           Delete {{this.deleteIds.size}}
+        </button>
+        <button *ngIf="!trackingAuthentication" class="btn btn-xs btn-success" (click)="openTrackingModal()">Submit
         </button>
         <button class="btn btn-xs btn-secondary" (click)="closeTrackModal()">
           {{showVisitDetails ? 'Back' : 'Close'}}
