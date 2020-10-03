@@ -115,12 +115,11 @@ export class AppComponent implements OnInit {
   }
 
   public generateNextSongSrc() {
-    const lastSong =
-      parseInt(sessionStorage.getItem("key_songId"), 10) ||
-      Math.floor(Math.random() * this.songCount[this.greetingType]);
+    let songStorageId = `key_songId_${this.greetingType}`;
+    const lastSong = parseInt(localStorage.getItem(songStorageId), 10) || 0;
     const nextSong = (lastSong + 1) % this.songCount[this.greetingType];
     this.songSrc = `assets/songs/${this.greetingType}/song${nextSong}.mp3`;
-    sessionStorage.setItem("key_songId", nextSong.toString());
+    localStorage.setItem(songStorageId, nextSong.toString());
     if (!this.songPlayer) {
       this.songPlayer = this.getSongPlayerElt();
     }
