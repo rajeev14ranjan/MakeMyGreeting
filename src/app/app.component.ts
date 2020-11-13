@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
 
   public greetingPlaceholder = "{{Default}}";
 
+  public showInfo = false;
+
   // Default Values to be loaded
   private defaultGreeting = {
     HNY:
@@ -207,6 +209,11 @@ export class AppComponent implements OnInit {
         .toUpperCase();
       return this._http.post("./api/greet.php", postData, this.httpOptions);
     }
+  }
+
+  public setShowInfo() {
+    this.showInfo = true;
+    setTimeout(() => (this.showInfo = false), 3000);
   }
 
   public getQueryParam(key: string) {

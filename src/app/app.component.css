@@ -69,3 +69,49 @@ p {
   font-family: consolas monospace;
   color: red;
 }
+
+.author-info {
+  font-size: medium;
+  font-family: sans-serif;
+  text-align: right;
+  user-select: none;
+}
+
+.info-icon {
+  margin-left: 10px;
+  color: black;
+  background-color: dimgrey;
+  border-radius: 50%;
+  padding: 1px 8px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.author {
+  font-weight: 100;
+  font-size: 0;
+}
+
+.on {
+  color: #adb100;
+  -webkit-animation: show 3s ease-in;
+  -moz-animation: show 3s ease-in;
+  -o-animation: show 3s ease-in;
+  -ms-animation: show 3s ease-in;
+  animation: show 3s ease-in;
+}
+
+@keyframes show {
+  0% {
+    font-size: 0;
+  }
+  10% {
+    font-size: small;
+  }
+  90% {
+    font-size: small;
+  }
+  100% {
+    font-size: 0;
+  }
+}
