@@ -362,7 +362,7 @@ export class AppComponent implements OnInit {
   }
 
   public checkTrackingAuth(): boolean {
-    let lastAuthKey = localStorage.getItem(this.trackingAuthKey);
+    let lastAuthKey = sessionStorage.getItem(this.trackingAuthKey);
     if (lastAuthKey && this.hash(lastAuthKey) === this.trackingHash) {
       this.trackingAuthentication = true;
       return true;
@@ -371,7 +371,7 @@ export class AppComponent implements OnInit {
     this.trackingAuthentication =
       this.hash(this.trackingPw) === this.trackingHash;
     if (this.trackingAuthentication) {
-      localStorage.setItem(this.trackingAuthKey, this.trackingPw);
+      sessionStorage.setItem(this.trackingAuthKey, this.trackingPw);
     }
     this.trackingPw = "";
     return this.trackingAuthentication;
