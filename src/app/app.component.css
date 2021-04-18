@@ -34,6 +34,10 @@
   margin-bottom: 0;
 }
 
+.pb0 {
+  padding-bottom: 0;
+}
+
 .pr5 {
   padding-right: 5px;
 }
@@ -78,7 +82,7 @@
   text-decoration: none;
   text-align: center;
   cursor: pointer;
-  max-width: 330px;
+  max-width: 80px;
 }
 
 .inbl {

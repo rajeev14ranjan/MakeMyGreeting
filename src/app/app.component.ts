@@ -349,7 +349,8 @@ export class AppComponent implements OnInit {
         this.visitingDetails = {
           ...data[0],
           id,
-          last: data[0].last ? new Date(`${data[0].last} GMT+0`) : data[0].last,
+          last: data[0].last ? new Date(`${data[0].last} GMT+0`) : null,
+          time: data[0].time ? new Date(`${data[0].time} GMT+0`) : data[0].time,
           greeting:
             data[0].greeting === this.greetingPlaceholder
               ? this.defaultGreeting[data[0].type]
@@ -400,11 +401,15 @@ export class AppComponent implements OnInit {
 
   public sortByLastSeen(event: any) {
     this.trackingDetails = this.trackingDetails
-      .sort((a, b) =>
-        event.target.checked
-          ? Date.parse(b.last) - Date.parse(a.last)
-          : a.index - b.index
-      )
+      .sort((a, b) => {
+        if (event.target.checked) {
+          if (!a.last) return 1;
+          if (!b.last) return -1;
+          return Date.parse(b.last) - Date.parse(a.last);
+        } else {
+          return a.index - b.index;
+        }
+      })
       .map((detail) => detail);
   }
 

@@ -25,7 +25,7 @@ function validate_Key($client_keyhex){
     $client_key = base_convert($client_keyhex, 36, 10);
     
     $t_difference = $server_key - $client_key;
-    if($t_difference >= 0 and $t_difference <= 60){
+    if($t_difference >= -60 and $t_difference <= 60){
         return true;
     } else {
         return false;
@@ -114,7 +114,7 @@ function get_admin_greeting($data){
     $id = mysqli_real_escape_string($connection, $data["id"]);
     $ut = mysqli_real_escape_string($connection, $data["ut"]);
 
-    $query= "SELECT g.sender, g.receiver, g.greeting, g.last, g.count, g.type, IF(m.meta IS NULL, FALSE, TRUE) as atf FROM greetingtb g LEFT JOIN metadata m ON (g.id = m.value) WHERE g.id = '". $id."' AND m.meta = 1 LIMIT 1; ";
+    $query= "SELECT g.sender, g.receiver, g.greeting, g.type, IF(m.meta IS NULL, FALSE, TRUE) as atf FROM greetingtb g LEFT JOIN metadata m ON (g.id = m.value) WHERE g.id = '". $id."' AND m.meta = 1 LIMIT 1; ";
 
     $response=array();
     $result=mysqli_query($connection, $query);
@@ -134,7 +134,7 @@ function get_greeting($data){
     $id = mysqli_real_escape_string($connection, $data["id"]);
     $ut = mysqli_real_escape_string($connection, $data["ut"]);
     
-    $query="SELECT sender, receiver, greeting, last, count, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";
+    $query="SELECT sender, receiver, greeting, last, count, time, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";
     
     if(!$ut){
         $query="SELECT sender, receiver, greeting, type FROM greetingtb WHERE id = '". $id."' LIMIT 1; ";

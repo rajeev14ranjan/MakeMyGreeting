@@ -154,10 +154,10 @@
         </h4>
         <span [hidden]="showVisitDetails || !trackingAuthentication" style="float: right;">
           <input type="checkbox" id="sorter" [ngModel]="false" (change)="sortByLastSeen($event)" />
-          <span class="receiver"> by last seen</span>
+          <span class="receiver"> last seen</span>
         </span>
       </div>
-      <div class="modal-body" style="max-height: 500px; overflow-y: auto; width: 100%;">
+      <div class="modal-body pb0" style="max-height: 500px; overflow-y: auto; width: 100%;">
         <ng-container *ngIf="!trackingAuthentication">
           <label class="form-label text-info mb0" for="name">
             Enter Password
@@ -171,8 +171,10 @@
               Loading visiting details...
             </div>
             <div *ngIf="visitingDetails">
-              <p>{{visitingDetails.receiver}} opened greeting {{visitingDetails.count}} times, Last opened on
-                {{visitingDetails.last | date: 'medium'}}</p>
+              <p>{{visitingDetails.receiver}} opened greeting {{visitingDetails.count}} times
+                <ng-container *ngIf="visitingDetails.last">, Last opened on {{visitingDetails.last | date: 'medium'}}</ng-container>
+              </p>
+                <p>Sent on {{visitingDetails.time | date: 'medium'}}</p>
               <p>Greeting: {{visitingDetails.greeting}}</p>
               <p>Type: {{visitingDetails.type}}</p>
               <p>Sender: {{visitingDetails.sender}}</p>
