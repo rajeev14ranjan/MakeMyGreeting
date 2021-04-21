@@ -383,6 +383,7 @@ export class AppComponent implements OnInit {
     this.trackingDetails.length = 0;
     this.deleteIds.clear();
     this.showVisitDetails = false;
+    this.trackingSortby = "LST";
 
     if (!this.allowTracking) return;
     this.trackModal.show();
@@ -425,6 +426,7 @@ export class AppComponent implements OnInit {
         break;
       case "MXT":
         sorter = (a, b) => parseInt(b.count) - parseInt(a.count);
+        break;
       default:
         sorter = (a, b) => Date.parse(b.time) - Date.parse(a.time);
     }
