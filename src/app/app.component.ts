@@ -68,6 +68,7 @@ export class AppComponent implements OnInit {
   public trackingAuthentication = false;
   public trackingPw = "";
   public trackingDetails = [];
+  private trackingSortby = "LST";
   public trackingAuthKey = "auth_key_track";
   private trackingHash = 1514221;
 
@@ -382,7 +383,6 @@ export class AppComponent implements OnInit {
     this.trackingDetails.length = 0;
     this.deleteIds.clear();
     this.showVisitDetails = false;
-    document.getElementById("sorter")["checked"] = false;
 
     if (!this.allowTracking) return;
     this.trackModal.show();
@@ -394,22 +394,47 @@ export class AppComponent implements OnInit {
 
     this.post(postData).subscribe((data: any) => {
       if (data && data.length) {
-        this.trackingDetails = data.map((d, index) => ({ ...d, index }));
+        this.trackingDetails = data;
       }
     });
   }
 
-  public sortByLastSeen(event: any) {
-    this.trackingDetails = this.trackingDetails
-      .sort((a, b) => {
-        if (event.target.checked) {
+  public reorderTracking() {
+    let sorter: Function;
+
+    switch (this.trackingSortby) {
+      case "LSO":
+        sorter = (a, b) => {
           if (!a.last) return 1;
           if (!b.last) return -1;
           return Date.parse(b.last) - Date.parse(a.last);
-        } else {
-          return a.index - b.index;
-        }
-      })
+        };
+        break;
+      case "MXG":
+        sorter = (a, b) => {
+          if (!a.last) return 1;
+          if (!b.last) return -1;
+          return Date.parse(a.last) -
+            Date.parse(a.time) -
+            Date.parse(b.last) +
+            Date.parse(b.time) >
+            0
+            ? -1
+            : 1;
+        };
+        break;
+      case "MXT":
+        sorter = (a, b) => parseInt(b.count) - parseInt(a.count);
+      default:
+        sorter = (a, b) => Date.parse(b.time) - Date.parse(a.time);
+    }
+
+    this.sortByTracking(sorter);
+  }
+
+  public sortByTracking(sorter: Function) {
+    this.trackingDetails = this.trackingDetails
+      .sort((a, b) => sorter(a, b))
       .map((detail) => detail);
   }
 

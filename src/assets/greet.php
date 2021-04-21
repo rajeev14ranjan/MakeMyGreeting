@@ -159,7 +159,7 @@ function get_greeting($data){
 function get_tracking($data){
     global $connection;   
 
-    $query ="SELECT g.id, g.receiver, g.count, g.last FROM greetingtb g JOIN metadata m ON g.id != m.value WHERE m.meta = 1 ORDER BY time DESC LIMIT 0, 200";        
+    $query ="SELECT g.id, g.receiver, g.count, g.last, g.time FROM greetingtb g JOIN metadata m ON g.id != m.value WHERE m.meta = 1 ORDER BY time DESC LIMIT 0, 200";        
     
     $response=array();
     $result=mysqli_query($connection, $query);

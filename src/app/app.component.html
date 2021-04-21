@@ -152,10 +152,16 @@
         <h4 class="modal-title pull-left" style="line-height: 1;">
           {{showVisitDetails ? 'Visit' : 'Tracking'}} Details
         </h4>
-        <span [hidden]="showVisitDetails || !trackingAuthentication" style="float: right;">
-          <input type="checkbox" id="sorter" [ngModel]="false" (change)="sortByLastSeen($event)" />
-          <span class="receiver"> last seen</span>
-        </span>
+        <select [hidden]="showVisitDetails || !trackingAuthentication"
+                class="form-control mb10" 
+                (change)="reorderTracking()" 
+                style="float: right; max-width: 30%;"
+                [(ngModel)]="trackingSortby">
+          <option value="LST">Last Sent</option>
+          <option value="LSO">Last Opened</option>
+          <option value="MXG">Max Gap</option>
+          <option value="MXT">Max Times</option>
+        </select>
       </div>
       <div class="modal-body pb0" style="max-height: 500px; overflow-y: auto; width: 100%;">
         <ng-container *ngIf="!trackingAuthentication">
