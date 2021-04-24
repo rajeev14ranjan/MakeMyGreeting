@@ -82,7 +82,14 @@
   text-decoration: none;
   text-align: center;
   cursor: pointer;
+}
+
+.mw-80 {
   max-width: 80px;
+}
+
+.mw-500 {
+  max-width: 500px;
 }
 
 .inbl {

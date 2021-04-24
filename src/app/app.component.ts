@@ -395,7 +395,11 @@ export class AppComponent implements OnInit {
 
     this.post(postData).subscribe((data: any) => {
       if (data && data.length) {
-        this.trackingDetails = data;
+        this.trackingDetails = data.map((d: any) => {
+          d.time = d.time.replaceAll("-", "/");
+          d.last = d.last ? d.last.replaceAll("-", "/") : d.last;
+          return d;
+        });
       }
     });
   }

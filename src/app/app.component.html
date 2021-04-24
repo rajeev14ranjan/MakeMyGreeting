@@ -25,12 +25,11 @@
 </div>
 
 <!------------------- Only the create part ------------------->
-
-<button *ngIf="allowCreateLinks" class="act-btn push-right" (click)="openCreateGreetingModal()">
+<button *ngIf="allowCreateLinks" class="act-btn push-right" (click)="openCreateGreetingModal()" [ngClass]="isPreview ? 'mw-500' : 'mw-80'">
   {{ isPreview ? 'This is a Preview, Continue editing' : 'Create' }}
 </button>
 
-<button *ngIf="allowTracking && !isPreview" class="act-btn push-left" (click)="openTrackingModal()">
+<button *ngIf="allowTracking && !isPreview" class="act-btn mw-80 push-left" (click)="openTrackingModal()">
   Track
 </button>
 
@@ -155,7 +154,7 @@
         <select [hidden]="showVisitDetails || !trackingAuthentication"
                 class="form-control mb10" 
                 (change)="reorderTracking()" 
-                style="float: right; max-width: 30%;"
+                style="float: right; max-width: 40%;"
                 [(ngModel)]="trackingSortby">
           <option value="LST">Last Sent</option>
           <option value="LSO">Last Opened</option>
