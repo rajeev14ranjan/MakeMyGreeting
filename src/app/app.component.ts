@@ -31,12 +31,15 @@ export class AppComponent implements OnInit {
     HBD:
       "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
     CNG: "Congratulations on your achievement",
+    GWS:
+      "Hope it helps a little to know how lovingly you’re thought of, Wishing you a speedy and full recovery. Get Well Soon",
   };
   private defaultType = "HNY";
   private songCount = {
     CNG: 1,
     HNY: 5,
     HBD: 4,
+    GWS: 2,
   };
   private untrackableKey = "key_untracakable";
 
@@ -86,6 +89,7 @@ export class AppComponent implements OnInit {
     HNY: "firework",
     HBD: "firework",
     CNG: "confetti",
+    GWS: "flowers",
   };
 
   @ViewChild("createModal") createModal: ModalDirective;

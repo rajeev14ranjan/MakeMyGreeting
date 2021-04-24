@@ -7,6 +7,7 @@
     <p class="textJustify">{{ isPreview ? newGreeting : greeting }}</p>
     <img *ngIf="visibleFor('HNY')" style="width:80%;max-width: 500px;" src="assets/img/year.png" />
     <img *ngIf="visibleFor('CNG')" style="width:80%;max-width: 500px;" src="assets/img/cng.png" />
+    <img *ngIf="visibleFor('GWS')" style="width:80%;max-width: 500px;" src="assets/img/gws.png" />
     <balloons *ngIf="visibleFor('HBD')"></balloons>
 
     <p style="font-size: 1.2em">
@@ -53,6 +54,7 @@
                 <option value="HNY">Happy New Year</option>
                 <option value="HBD">Happy Birthday</option>
                 <option value="CNG">Congratulations</option>
+                <option value="GWS">Get Well Soon</option>
               </select>
             </div>
             <div class="half pl5 inbl bb">
