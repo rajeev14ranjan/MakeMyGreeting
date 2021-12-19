@@ -26,13 +26,10 @@ export class AppComponent implements OnInit {
   private defaultReceiverName = "You";
   private defaultSenderName = "MakeMyGreeting";
   private defaultGreeting = {
-    HNY:
-      "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
-    HBD:
-      "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
+    HNY: "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
+    HBD: "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
     CNG: "Congratulations on your achievement",
-    GWS:
-      "Hope it helps a little to know how lovingly you’re thought of, Wishing you a speedy and full recovery. Get Well Soon",
+    GWS: "Hope it helps a little to know how lovingly you’re thought of, Wishing you a speedy and full recovery. Get Well Soon",
   };
   private defaultType = "HNY";
   private songCount = {
@@ -431,6 +428,21 @@ export class AppComponent implements OnInit {
             ? -1
             : 1;
         };
+        break;
+      case "SMT":
+        let currYear = new Date().getFullYear().toString();
+        let now = Date.now();
+        sorter = (a, b) => {
+          if (!a.time) return 1;
+          if (!b.time) return -1;
+          let aDate = Date.parse(currYear + a.time.substr(4));
+          let bDate = Date.parse(currYear + b.time.substr(4));
+
+          return Math.abs(aDate - now) < Math.abs(bDate - now) ? -1 : 1;
+        };
+        break;
+      case "TYP":
+        sorter = (a, b) => (a.type < b.type ? -1 : 1);
         break;
       case "MXT":
         sorter = (a, b) => parseInt(b.count) - parseInt(a.count);
