@@ -132,8 +132,9 @@ export class AppComponent implements OnInit {
   }
 
   removeLogo() {
-    setTimeout(() => {
-      document.querySelector("div.disclaimer").remove();
+    let removeBanner = () => {
+      let disclaimer = document.querySelector("div.disclaimer");
+      if (disclaimer) disclaimer.remove();
       const aElt = document.querySelectorAll("a");
       for (let i = 0; i < aElt.length; i++) {
         if (aElt[i].title.includes("Hosted on free")) {
@@ -141,7 +142,12 @@ export class AppComponent implements OnInit {
           break;
         }
       }
-    }, 300);
+    };
+
+    setTimeout(removeBanner, 0);
+    setTimeout(removeBanner, 50);
+    setTimeout(removeBanner, 100);
+    setTimeout(removeBanner, 300);
   }
 
   sanitize(url: string) {
