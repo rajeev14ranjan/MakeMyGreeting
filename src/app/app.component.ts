@@ -23,13 +23,10 @@ export class AppComponent implements OnInit {
 
   // Default Values to be loaded
   private defaultGreeting = {
-    HNY:
-      "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
-    HBD:
-      "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
+    HNY: "May all your Dreams and Wishes come true, and may Success touch your feet. May each day of the New year bring you Luck, Joy, Happiness and Prosperity. Wishing you and your family a Happy New Year",
+    HBD: "Hope your special day brings you all that your heart desires! Here’s wishing you a day full of pleasant surprises, Happy Birthday !",
     CNG: "Congratulations on your achievement",
-    GWS:
-      "Hope it helps a little to know how lovingly you’re thought of, Wishing you a speedy and full recovery. Get Well Soon",
+    GWS: "Hope it helps a little to know how lovingly you’re thought of, Wishing you a speedy and full recovery. Get Well Soon",
   };
 
   private songCount = {
@@ -136,6 +133,7 @@ export class AppComponent implements OnInit {
 
   removeLogo() {
     setTimeout(() => {
+      document.querySelector("div.disclaimer").remove();
       const aElt = document.querySelectorAll("a");
       for (let i = 0; i < aElt.length; i++) {
         if (aElt[i].title.includes("Hosted on free")) {
