@@ -165,6 +165,7 @@ export class AppComponent implements OnInit {
 
   removeLogo() {
     setTimeout(() => {
+      document.querySelector("div.disclaimer").remove();
       const aElt = document.querySelectorAll("a");
       for (let i = 0; i < aElt.length; i++) {
         if (aElt[i].title.includes("Hosted on free")) {
